@@ -1,0 +1,25 @@
+# python backend
+.venv
+
+*.pyc
+__pycache__/
+
+instance/
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/
+
+# react-frontend
+node_modules
+
+
+# Other
+.env
+zzzNotes.txt
+LICENSE.txt
+.DS_Store
