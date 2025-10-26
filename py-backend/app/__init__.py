@@ -1,4 +1,10 @@
 from flask import Flask
+from flask_migrate import Migrate
+
+from app.extensions import db
+
+# FACILITY MODELS
+from app.models import facility, course
 
 from config import Config
 
@@ -7,6 +13,14 @@ def create_app(config_class=Config):
 
   # Set Config varibles
   app.config.from_object(config_class)
+
+  # Initialize Flask extensions
+  db.init_app(app)
+
+  # Mirgrate Models
+  Migrate(app, facility.db)
+  Migrate(app, course.db)
+
 
   # Register Blueprints
   from app.facility import bp as facility_bp
