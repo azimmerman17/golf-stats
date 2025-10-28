@@ -6,9 +6,9 @@ class Tee(db.Model):
   tee_id = db.Column(db.Integer, primary_key=True)
   course_id = db.Column(db.Integer, db.ForeignKey(Course.course_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
   name = db.Column(db.String, nullable=False)
-  yards = db.Column(db.Integer, db.CheckConstraint('YARDS > 0', name='tee_yards_min'), nullable=False, server_default='7200')
-  meters = db.Column(db.Integer, db.CheckConstraint('METERS > 0', name='tee_meters_min'), nullable=False, server_default='6600')
-  hole_count = db.Column(db.Integer, db.CheckConstraint('HOLE_COUNT >= 1 AND HOLE_COUNT <= 18', name='check_tee_hole_count'), nullable=False, server_default='18')
+  yards = db.Column(db.Integer, db.CheckConstraint('yards > 0', name='tee_yards_min'), nullable=False, server_default='7200')
+  meters = db.Column(db.Integer, db.CheckConstraint('meters > 0', name='tee_meters_min'), nullable=False, server_default='6600')
+  hole_count = db.Column(db.Integer, db.CheckConstraint('hole_count >= 1 AND hole_count <= 18', name='check_tee_hole_count'), nullable=False, server_default='18')
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
