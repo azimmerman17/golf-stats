@@ -8,7 +8,7 @@ class Course(db.Model):
   facility_id = db.Column(db.Integer, db.ForeignKey(Facility.facility_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
   name = db.Column(db.String(50))
   hole_count = db.Column(db.Integer, db.CheckConstraint('hole_count >= 1', name='hole_count_min'), db.CheckConstraint('hole_count <= 18',  name='hole_count_max'), nullable=False, server_default='18')
-  established = db.Column(db.Integer, db.CheckConstraint('established > 1400', name='CHECK_CRSE_ESTABLISHED_MIN'))
+  established = db.Column(db.Integer, db.CheckConstraint('established > 1400', name='course_established_min'))
   architect = db.Column(db.String(100))
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
@@ -21,8 +21,8 @@ class Course(db.Model):
 
   @orm.validates('established')
   def validate_established(self, key, value):
-    if value < 1574:
-      raise ValueError(f'Invalid Course Established Year - {value} - The first modern day course was esablished in 1574, please sumbit a later date.')
+    if value < 1400:
+      raise ValueError(f'Invalid Course Established Year - {value} - The first modern day course was esablished after 1400, please sumbit a later date.')
     elif value > date.today().year:
       raise ValueError(f'Invalid Course Established Year - {value} - Courses cannot have a future dated established year, it is likely this facility is still under construction, please resumbit this course once it opens.')
     return value
