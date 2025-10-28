@@ -21,6 +21,7 @@ def upgrade():
     sa.Column('course_id', sa.Integer(), nullable=False),
     sa.Column('facility_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=True),
+    sa.Column('handle', sa.String(length=25), nullable=False),
     sa.Column('hole_count', sa.Integer(), server_default='18', nullable=False),
     sa.Column('established', sa.Integer(), nullable=True),
     sa.Column('architect', sa.String(length=100), nullable=True),
@@ -28,7 +29,10 @@ def upgrade():
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('NOW()'), nullable=False),
     sa.ForeignKeyConstraint(['facility_id'], ['Facility.facility_id'], onupdate='CASCADE', ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('course_id'),
-    sa.UniqueConstraint('course_id')
+    sa.UniqueConstraint('course_id'),
+    sa.UniqueConstraint('handle'),
+    sa.CheckConstraint('hole_count >= 1 AND hole_count <= 18', name=op.f('check_course_hole_count')),
+    sa.CheckConstraint('established > 1400', name=op.f('check_course_established_min')),
     )
     # ### end Alembic commands ###
 

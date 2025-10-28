@@ -21,7 +21,6 @@ def upgrade():
     op.create_table('Facility',
     sa.Column('facility_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
-    sa.Column('handle', sa.String(length=25), nullable=False),
     sa.Column('classification', sa.Enum('D', 'P', 'R', 'M', 'S', 'O', name='facility_classification'), server_default='O', nullable=False),
     sa.Column('hole_count', sa.Integer(), server_default='1', nullable=False),
     sa.Column('established', sa.Integer(), nullable=True),
@@ -36,7 +35,10 @@ def upgrade():
     sa.Column('updated_at', sa.TIMESTAMP(), nullable=False, server_default=sa.func.now()),
     sa.PrimaryKeyConstraint('facility_id'),
     sa.UniqueConstraint('facility_id'),
-    sa.UniqueConstraint('handle')
+    sa.CheckConstraint('hole_count > 0', name=op.f('check_facility_hole_count')),
+    sa.CheckConstraint('established > 1400', name=op.f('check_facility_established')),
+    sa.CheckConstraint('geo_lat > -90 AND geo_lat < 90', name=op.f('check_facility_geo_lat')),
+    sa.CheckConstraint('geo_lon > -180 AND geo_lon < 180', name=op.f('check_facility_geo_lon')),
     )
     # ### end Alembic commands ###
 

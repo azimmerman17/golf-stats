@@ -4,17 +4,16 @@ from app.extensions import db, orm
 class Facility(db.Model):
   facility_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
   name = db.Column(db.String(100), nullable=False)
-  handle = db.Column(db.String(25), nullable=False, unique=True)
   classification = db.Column(db.Enum('D','P','R','M','S','O', name='facility_classification'), nullable=False, server_default='O')
-  hole_count = db.Column(db.Integer, db.CheckConstraint('hole_count > 0', name='check_hole_count'), nullable=False, server_default='1')
-  established = db.Column(db.Integer, db.CheckConstraint('established > 1400', name='check_established'))
+  hole_count = db.Column(db.Integer, db.CheckConstraint('hole_count > 0', name='check_facility_hole_count'), nullable=False, server_default='1')
+  established = db.Column(db.Integer, db.CheckConstraint('established > 1400', name='check_facility_established'))
   website = db.Column(db.String(100))
   address = db.Column(db.String(100))
   city = db.Column(db.String(50))
   state = db.Column(db.String(3))
   country = db.Column(db.String(3))
-  geo_lat = db.Column(db.FLOAT, db.CheckConstraint('geo_lat > -90', name='check_geo_lat_min'), db.CheckConstraint('geo_lat < 90', name='check_geo_lat_max'))
-  geo_lon = db.Column(db.FLOAT, db.CheckConstraint('geo_lon > -180', name='check_geo_lon_min'), db.CheckConstraint('geo_lon < 180', name='check_geo_lon_max'))
+  geo_lat = db.Column(db.FLOAT, db.CheckConstraint('geo_lat > -90 AND geo_lat < 90', name='check_facility_geo_lat'))
+  geo_lon = db.Column(db.FLOAT, db.CheckConstraint('geo_lon > -180 AND geo_lon < 180', name='check_facility_geo_lon'))
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
@@ -44,10 +43,9 @@ class Facility(db.Model):
       raise ValueError(f'Invalid Facility Longitude - {value} - The maximum and minimun longitude values on Earth is +/- 180 degrees, please check and resubmit your coordinates')
     return value
 
-  def __init__(self, facility_id, name, handle=None, classification=None, hole_count=None, established=None, website=None, address=None, city=None, state=None, country=None, geo_lat=None, geo_lon=None, created_at=None, updated_at=None):
+  def __init__(self, facility_id, name, classification=None, hole_count=None, established=None, website=None, address=None, city=None, state=None, country=None, geo_lat=None, geo_lon=None, created_at=None, updated_at=None):
     facility_id = self.facility_id
     name = self.name
-    handle = self.handle
     classification = self.classification
     hole_count = self.hole_count
     established = self.established

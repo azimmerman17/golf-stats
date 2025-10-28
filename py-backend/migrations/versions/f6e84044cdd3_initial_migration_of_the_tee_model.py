@@ -27,7 +27,10 @@ def upgrade():
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['course_id'], ['Course.course_id'], onupdate='CASCADE', ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('tee_id')
+    sa.PrimaryKeyConstraint('tee_id'),
+    sa.CheckConstraint('yards > 0', name=op.f('check_tee_yards')),
+    sa.CheckConstraint('meters > 0', name=op.f('check_tee_meters')),
+    sa.CheckConstraint('hole_count >= 1 AND hole_count <= 18', name=op.f('check_tee_hole_count')),
     )
     # ### end Alembic commands ###
 
