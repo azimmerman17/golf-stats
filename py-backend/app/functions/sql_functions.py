@@ -1,11 +1,18 @@
+from app.extensions import db, Engine
+
+# FUNCTION TO OPEN A NEW DBCONNECTION
+def open_conn():
+  c = Engine.connect()
+  c.begin()
+  return c
+
 # FUNCTION TO RUN A QUERY
 def run_query(query, conn=None, hide=False):
-  from app.extensions import db, Engine
 
+  flag = 0
   # if connection not passed in, connect to db
   if conn == None:
-    conn = Engine.connect()
-    conn.begin()
+    conn = open_conn()
     flag = 1
 
   # run the query
@@ -25,3 +32,13 @@ def run_query(query, conn=None, hide=False):
     conn.close()
 
   return result
+
+# FUNCTION TO CHECK IF A CONNECTION REMAINS OPEN
+def check_conn(c):
+  try:
+    c.info
+  except Exception as error:
+    print(error)
+    return False
+  
+  return True

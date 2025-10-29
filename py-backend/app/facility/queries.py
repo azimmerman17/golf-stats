@@ -9,3 +9,11 @@ def check_unique_facility(data):
     ;"""
 
   return query
+
+def get_facility(id=None):
+  query = f"""
+    SELECT F.* FROM "Facility" F
+    {f'WHERE F.facility_id = {id}' if id is not None else ''}
+    ;"""
+    
+  return query
