@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from app.extensions import db
 
 # FACILITY MODELS
-from app.models import facility, course, tee, course_rating, hole, hole_geo
+from app.models import facility, course, tee, course_rating, hole, hole_geo, facility_season
 
 from config import Config
 
@@ -24,6 +24,7 @@ def create_app(config_class=Config):
   Migrate(app, course_rating.db)
   Migrate(app, hole.db)
   Migrate(app, hole_geo.db) 
+  Migrate(app, facility_season.db) 
 
   # Register Blueprints
   from app.facility import bp as facility_bp
