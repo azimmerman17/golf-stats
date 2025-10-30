@@ -4,7 +4,7 @@ from app.models.facility import Facility
 
 class Facility_Season(db.Model):
   facility_season_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
-  facility_id = db.Column(db.Integer, db.ForeignKey(Facility.facility_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+  facility_id = db.Column(db.Integer, db.ForeignKey(Facility.facility_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False, unique=True)
   start_date = db.Column(db.String(50))
   end_date = db.Column(db.String(50))
   year_round = db.Column(db.Boolean, nullable=False, server_default='0')
@@ -22,3 +22,32 @@ class Facility_Season(db.Model):
   def as_dict(self):
     keys = ['created_at', 'updated_at']
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
+
+  def insert_row(self, data):
+    keys=''
+    values=''
+
+    for k in data.keys():
+      print(f"'{k}' '{data[k]}'")
+      keys = f'{keys}{'' if keys == '' else ', '}{k}'
+      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
+
+    query = f"""
+    INSERT INTO "Facility_Season" ({keys})
+    VALUES ({values})
+    ;"""
+
+    return query
+  
+  def update_row(self, update_dict):
+    query = """
+    UPDATE "Facility_Season"
+    SET updated_at = NOW()"""
+
+    for key in update_dict.keys():
+      query = f"{query}, {key} = '{update_dict[key]}'"
+    
+    query = f"""{query}
+    WHERE facility_id = {self.facility_id}
+    ;"""
+

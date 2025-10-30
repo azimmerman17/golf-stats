@@ -27,7 +27,9 @@ def upgrade():
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['facility_id'], ['Facility.facility_id'], onupdate='CASCADE', ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('facility_season_id'),
-    sa.UniqueConstraint('facility_season_id')
+    sa.UniqueConstraint('facility_season_id'),
+    sa.UniqueConstraint('facility_id')
+
     )
 
     # ### end Alembic commands ###

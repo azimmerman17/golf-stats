@@ -3,11 +3,14 @@ from markupsafe import escape
 
 from app.extensions import Engine
 from app.facility import bp
+from app.facility.functions import process_ghin_data
 from app.facility.queries import check_unique_facility, get_facility
 from app.functions.sql_functions import run_query, open_conn, check_conn
 
 from app.models.facility import Facility
+from app.models.facility_season import Facility_Season
 
+Facility_Season
 from config import Config
 
 # GET ALL FACILITIES, CREATE NEW FACILITY
@@ -94,6 +97,37 @@ def facility_id(id, config_class=Config):
 
     # Future work, build and return the entire facility
     return Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict()
+  # CREATE A NEW COURSE AT FACILITY
+  elif request.method == 'POST':
+    # check if payload is valid
+    if request.is_json == False:
+      return {'msg': 'No JSON data to create new course'}, 400
+
+    # get current facility record
+    query = get_facility(escape(id))
+
+    try:
+      res = run_query(query).mappings().all()
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Unable to confirm if facility exist'}, 500
+
+    # check if there is a result, if there is data, do not insert new row
+    if len(res) == 0:
+      return {'msg': 'Facility not in database'}, 400
+
+    f = res[0]
+
+    # Transform facility cursor to dict
+    f = {
+      'facility': Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict(),
+      'season': Facility_Season(f['facility_season_id'] if 'facility_season_id' in f.keys() else None, facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict()
+    }
+
+    # Process data from payload
+    process_ghin_data(f, request.json)
+
+    return 'done'
   # UPDATE FACILITY BY ID
   elif request.method == 'PUT':
     # get facility - validate facility exists

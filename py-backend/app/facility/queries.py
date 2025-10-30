@@ -11,8 +11,9 @@ def check_unique_facility(data):
   return query
 
 def get_facility(id=None):
-  query = f"""
-    SELECT F.* FROM "Facility" F
+  query = f"""SELECT F.*, S.start_date, S.end_date, S.year_round 
+    FROM "Facility" F
+      LEFT JOIN "Facility_Season" S ON S.facility_id = F.facility_id
     {f'WHERE F.facility_id = {id}' if id is not None else ''}
     ;"""
     
