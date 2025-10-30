@@ -33,8 +33,8 @@ def facility(config_class=Config):
     # check if required fields are present
     elif any(item not in request.json.keys() for item in ['name', 'city', 'state', 'country']):
       return {'msg': 'Required field(s) missing for facility insert'}, 400
-    else:
-      data = request.json
+    
+    data = request.json
 
     # check if facility is new  -- Name, City, State, County combination must be unique
     check_unique_query = check_unique_facility(request.json)
@@ -50,7 +50,8 @@ def facility(config_class=Config):
       return {'msg': 'Facility already exists'}, 200 
 
     # insert facility into table
-    insert_query = Facility(None, data['name'], classification=data['classification'], hole_count=data['hole_count'], established=data['established'], handle=data['handle'], website=data['website'], address=data['address'], city=data['city'], state=data['state'], country=data['country'], geo_lat=data['geo_lat'], geo_lon=data['geo_lon']).insert_row()
+    # insert_query = Facility(None,name=data['name'], classification=data['classification'], hole_count=data['hole_count'], established=data['established'], handle=data['handle'], website=data['website'], address=data['address'], city=data['city'], state=data['state'], country=data['country'], geo_lat=data['geo_lat'], geo_lon=data['geo_lon']).insert_row(request.json)
+    insert_query = Facility(None).insert_row(request.json)
     
     # open db connection
     conn = open_conn()
@@ -75,6 +76,7 @@ def facility(config_class=Config):
 # GET ALL FROM A FACILITY BY ID, CREATE NEW COURSE, UPDATE & DELETE EXISTING FACILITY
 @bp.route('/<int:id>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def facility_id(id, config_class=Config):
+  # GET FACILITY BY ID
   if request.method == 'GET':
     # get facilities query
     query = get_facility(escape(id))
@@ -92,9 +94,61 @@ def facility_id(id, config_class=Config):
 
     # Future work, build and return the entire facility
     return Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict()
+  # UPDATE FACILITY BY ID
+  elif request.method == 'PUT':
+    # get facility - validate facility exists
+    check_query = get_facility(escape(id))
 
-  elif request.method == 'POST':
-    print(request.json)
-    return request.json
+    try:
+      res = run_query(check_query).mappings().all()
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Error updating facility'}, 500
+    
+    if len(res) != 1:
+      return {'msg': 'Error: could not retrieve the requested facility'}, 500
+
+    # update facility
+    update_query = Facility(escape(id)).update_row(request.json)
+
+    # open db connection
+    conn = open_conn()
+
+    # run update query
+    try:
+      run_query(update_query, conn)
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Error updating facility record'}, 500
+
+    # check connection - open = success, closed = fail
+    if check_conn(conn) == True:
+      conn.commit()
+      conn.close()
+      return {'msg': 'Facility record updated successfully'}, 200
+    else:
+      return {'msg': 'Error updating facility record'}, 500
+  # DELETE FACILITY BY ID
+  elif request.method == 'DELETE':
+    # create delete query
+    delete_query = Facility(escape(id)).delete_row()
+
+    # open db connection
+    conn = open_conn()
+
+    # run delete query
+    try:
+      run_query(delete_query, conn)
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Error deleting facility record'}, 500
+
+    # check connection - open = success, closed = fail
+    if check_conn(conn) == True:
+      conn.commit()
+      conn.close()
+      return {'msg': 'Facility record deleted successfully'}, 200
+    else:
+      return {'msg': 'Error deleting facility record'}, 500
   else:
      return {'msg': 'Method not allowed'}, 405

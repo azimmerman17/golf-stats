@@ -50,7 +50,7 @@ class Facility(db.Model):
         raise ValueError(f'Invalid Facility Longitude - {value} - The maximum and minimun longitude values on Earth is +/- 180 degrees, please check and resubmit your coordinates')
     return value
 
-  def __init__(self, facility_id, name, classification=None, hole_count=None, established=None, handle=None, website=None, address=None, city=None, state=None, country=None, geo_lat=None, geo_lon=None, created_at=None, updated_at=None):
+  def __init__(self, facility_id, name=None, classification=None, hole_count=None, established=None, handle=None, website=None, address=None, city=None, state=None, country=None, geo_lat=None, geo_lon=None, created_at=None, updated_at=None):
     self.facility_id = facility_id
     self.name = name
     self.classification = classification
@@ -71,10 +71,45 @@ class Facility(db.Model):
     keys = ['created_at', 'updated_at']
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
 
-  def insert_row(self):
+  def insert_row(self, data):
+    keys=''
+    values=''
+
+    for k in data.keys():
+      print(f"'{k}' '{data[k]}'")
+      keys = f'{keys}{'' if keys == '' else ', '}{k}'
+      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
+
     query = f"""
-    INSERT INTO "Facility" (name, classification, hole_count, handle, established, website, address, city, state, country, geo_lat, geo_lon)
-    VALUES ('{self.name}', '{self.classification}', '{self.hole_count}', '{self.handle}', '{self.established}', '{self.website}', '{self.address}', '{self.city}', '{self.state}', '{self.country}', '{self.geo_lat}', '{self.geo_lon}')
+    INSERT INTO "Facility" ({keys})
+    VALUES ({values})
     ;"""
 
     return query
+
+  def update_row(self, update_dict):
+    query = """
+    UPDATE "Facility"
+    SET updated_at = NOW()"""
+
+    for key in update_dict.keys():
+      query = f"{query}, {key} = '{update_dict[key]}'"
+    
+    query = f"""{query}
+    WHERE facility_id = {self.facility_id}
+    ;"""
+
+    return  query
+
+  def delete_row(self):
+    query = f"""
+    DELETE FROM "Facility" 
+    WHERE  facility_id = {self.facility_id}
+    ;"""
+
+    return query
+
+
+
+
+    
