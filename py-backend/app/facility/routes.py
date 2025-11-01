@@ -27,7 +27,12 @@ def facility(config_class=Config):
       print('ERROR: ', error)
       return {'msg': 'Error retrieving facility list'}, 500
 
-    return [Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict() for f in res]
+
+
+    return [{
+      'facility': Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict(),
+      'season': Facility_Season(f['facility_season_id'], facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict()
+    } for f in res]
   # CREATE NEW FACILITY
   elif request.method == 'POST':
     # check if payload is valid
@@ -96,7 +101,10 @@ def facility_id(id, config_class=Config):
     f = res[0]
 
     # Future work, build and return the entire facility
-    return Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict()
+    return {
+      'facility': Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict(),
+      'season': Facility_Season(f['facility_season_id'], facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict()
+    }
   # CREATE A NEW COURSE AT FACILITY
   elif request.method == 'POST':
     # check if payload is valid
@@ -128,7 +136,6 @@ def facility_id(id, config_class=Config):
     return translate_ghin_data(f, request.json, config_class)
 
     return {'msg': translate_ghin_data['msg']}, translate_ghin_data['status_code']
-
   # UPDATE FACILITY BY ID
   elif request.method == 'PUT':
     # get facility - validate facility exists
@@ -185,5 +192,45 @@ def facility_id(id, config_class=Config):
       return {'msg': 'Facility record deleted successfully'}, 200
     else:
       return {'msg': 'Error deleting facility record'}, 500
+  else:
+     return {'msg': 'Method not allowed'}, 405
+
+# GET SEASON DATA FACILITY BY ID & UPDATE FACILITY 
+@bp.route('/<int:id>/season', methods=['PUT'])
+def facility_id_season(id, config_class=Config):
+  # GET FACILITY SEASON BY FACILITY ID
+  if request.method == 'PUT':
+    # get facility - validate facility exists
+    check_query = get_facility(escape(id))
+
+    try:
+      res = run_query(check_query).mappings().all()
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Error updating facility'}, 500
+    
+    if len(res) != 1:
+      return {'msg': 'Error: could not retrieve the requested facility'}, 500
+    
+    # update facility season
+    update_query = Facility_Season(None, escape(id)).update_row(request.json)
+
+    # open db connection
+    conn = open_conn()
+
+    # run update query
+    try:
+      run_query(update_query, conn)
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Error updating facility season record'}, 500
+
+    # check connection - open = success, closed = fail
+    if check_conn(conn) == True:
+      conn.commit()
+      conn.close()
+      return {'msg': 'Facility Season record updated successfully'}, 200
+    else:
+      return {'msg': 'Error updating facility season record'}, 500
   else:
      return {'msg': 'Method not allowed'}, 405
