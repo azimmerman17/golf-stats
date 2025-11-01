@@ -3,7 +3,7 @@ from markupsafe import escape
 
 from app.extensions import Engine
 from app.facility import bp
-from app.facility.functions import process_ghin_data
+from app.facility.functions import translate_ghin_data
 from app.facility.queries import check_unique_facility, get_facility
 from app.functions.sql_functions import run_query, open_conn, check_conn
 
@@ -124,10 +124,11 @@ def facility_id(id, config_class=Config):
       'season': Facility_Season(f['facility_season_id'] if 'facility_season_id' in f.keys() else None, facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict()
     }
 
-    # Process data from payload
-    process_ghin_data(f, request.json)
+    # translate data from payload
+    return translate_ghin_data(f, request.json, config_class)
 
-    return 'done'
+    return {'msg': translate_ghin_data['msg']}, translate_ghin_data['status_code']
+
   # UPDATE FACILITY BY ID
   elif request.method == 'PUT':
     # get facility - validate facility exists

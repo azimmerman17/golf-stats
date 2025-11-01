@@ -21,12 +21,11 @@ def upgrade():
     sa.Column('hole_id', sa.Integer(), nullable=False),
     sa.Column('tee_id', sa.Integer(), nullable=False),
     sa.Column('number', sa.Integer(), nullable=False),
+    sa.Column('gender', sa.Enum('M', 'F', name='hole_gender'), server_default='M', nullable=False),
     sa.Column('yards', sa.Integer(), server_default='400', nullable=False),
     sa.Column('meters', sa.Integer(), server_default='367', nullable=False),
-    sa.Column('par_male', sa.Integer(), nullable=True),
-    sa.Column('si_male', sa.Integer(), nullable=True),
-    sa.Column('par_female', sa.Integer(), nullable=True),
-    sa.Column('si_female', sa.Integer(), nullable=True),
+    sa.Column('par', sa.Integer(), nullable=True),
+    sa.Column('si', sa.Integer(), nullable=True),
     sa.Column('effective_date', sa.DATE(), server_default=sa.text('now()'), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
@@ -35,10 +34,8 @@ def upgrade():
     sa.CheckConstraint('number >= 1 AND number <= 18', name=op.f('check_hole_number')),
     sa.CheckConstraint('yards > 0 AND yards <= 999', name=op.f('check_hole_yards')),
     sa.CheckConstraint('meters > 0 AND meters <= 999', name=op.f('check_hole_meters')),
-    sa.CheckConstraint('par_male >= 3 AND par_male <= 6', name=op.f('check_hole_par_male')),
-    sa.CheckConstraint('par_female >= 3 AND par_female <= 6', name=op.f('check_hole_par_female')),
-    sa.CheckConstraint('si_male >= 1 AND si_male <= 18', name=op.f('check_hole_si_male')),
-    sa.CheckConstraint('si_female >= 1 AND si_female <= 18', name=op.f('check_hole_si_female')),
+    sa.CheckConstraint('par >= 3 AND par <= 6', name=op.f('check_hole_par')),
+    sa.CheckConstraint('si >= 1 AND si <= 18', name=op.f('check_hole_si')),
     )
     # ### end Alembic commands ###
 

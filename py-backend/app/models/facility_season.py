@@ -28,7 +28,6 @@ class Facility_Season(db.Model):
     values=''
 
     for k in data.keys():
-      print(f"'{k}' '{data[k]}'")
       keys = f'{keys}{'' if keys == '' else ', '}{k}'
       values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
 

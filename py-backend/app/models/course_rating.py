@@ -45,18 +45,18 @@ class Course_Rating(db.Model):
         raise ValueError(f'Invalid Par Value - {value} - PAr Value must be between 27 and 80')
       return value
 
-def __init__(self, course_rating_id, tee_id=None, name=None, hole_count=None, gender=None, start_hole=None, course_rating=None, slope=None, par=None, bogey_rating=None, effective_date=None):
-  self.course_rating_id = course_rating_id
-  self.tee_id = tee_id
-  self.name = name
-  self.hole_count = hole_count
-  self.gender = gender
-  self.start_hole = start_hole
-  self.course_rating = course_rating
-  self.slope = slope
-  self.par = par
-  self.bogey_rating = bogey_rating
-  self.effective_date = effective_date
+  def __init__(self, course_rating_id, tee_id=None, name=None, hole_count=None, gender=None, start_hole=None, course_rating=None, slope=None, par=None, bogey_rating=None, effective_date=None):
+    self.course_rating_id = course_rating_id
+    self.tee_id = tee_id
+    self.name = name
+    self.hole_count = hole_count
+    self.gender = gender
+    self.start_hole = start_hole
+    self.course_rating = course_rating
+    self.slope = slope
+    self.par = par
+    self.bogey_rating = bogey_rating
+    self.effective_date = effective_date
 
   def as_dict(self):
     keys = ['created_at', 'updated_at']
@@ -67,7 +67,6 @@ def __init__(self, course_rating_id, tee_id=None, name=None, hole_count=None, ge
     values=''
 
     for k in data.keys():
-      print(f"'{k}' '{data[k]}'")
       keys = f'{keys}{'' if keys == '' else ', '}{k}'
       values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
 
