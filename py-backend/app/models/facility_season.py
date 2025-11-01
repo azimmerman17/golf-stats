@@ -51,3 +51,5 @@ class Facility_Season(db.Model):
     WHERE facility_id = {self.facility_id}
     ;"""
 
+    return query
+

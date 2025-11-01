@@ -19,7 +19,7 @@ def run_query(query, conn=None, hide=False):
   try:
     result = conn.execute(db.text(query))
   except Exception as error:
-    print('Exception', error)
+    print('EXCEPTION - ', error)
     conn.rollback()
     conn.close()
     return error

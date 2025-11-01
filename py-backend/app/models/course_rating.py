@@ -19,27 +19,31 @@ class Course_Rating(db.Model):
 
   @orm.validates('hole_count')
   def validate_hole_count(self, key, value):
+    if value is not None:
       if value != 9 or value != 18:
         raise ValueError(f'Invalid Hole Count - {value} - Invalid Hole Counts, Handicap hole counts must be 9 or 18')
       return value
 
   @orm.validates('start_hole')
   def validate_start_hole(self, key, value):
-    if not 0 < value < 18:
-      raise ValueError(f'Invalid Start Hole - {value} - Start Hole must be > 1 and <= 18')
-    return value
+    if value is not None:
+      if not 0 < value < 18:
+        raise ValueError(f'Invalid Start Hole - {value} - Start Hole must be > 1 and <= 18')
+      return value
 
   @orm.validates('slope')
   def validate_slope(self, key, value):
-    if not 55 <= value <= 155:
-      raise ValueError(f'Invalid Slope Value - {value} - Slope Value must be between 55 and 155')
-    return value
+    if value is not None:
+      if not 55 <= value <= 155:
+        raise ValueError(f'Invalid Slope Value - {value} - Slope Value must be between 55 and 155')
+      return value
 
   @orm.validates('par')
   def validate_slope(self, key, value):
-    if not 27 <= value <= 80:
-      raise ValueError(f'Invalid Par Value - {value} - PAr Value must be between 27 and 80')
-    return value
+    if value is not None:
+      if not 27 <= value <= 80:
+        raise ValueError(f'Invalid Par Value - {value} - PAr Value must be between 27 and 80')
+      return value
 
 def __init__(self, course_rating_id, tee_id=None, name=None, hole_count=None, gender=None, start_hole=None, course_rating=None, slope=None, par=None, bogey_rating=None, effective_date=None):
   self.course_rating_id = course_rating_id
@@ -57,3 +61,33 @@ def __init__(self, course_rating_id, tee_id=None, name=None, hole_count=None, ge
   def as_dict(self):
     keys = ['created_at', 'updated_at']
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
+
+  def insert_row(self, data):
+    keys=''
+    values=''
+
+    for k in data.keys():
+      print(f"'{k}' '{data[k]}'")
+      keys = f'{keys}{'' if keys == '' else ', '}{k}'
+      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
+
+    query = f"""
+    INSERT INTO "Course_Rating" ({keys})
+    VALUES ({values})
+    ;"""
+
+    return query
+
+  def update_row(self, data):
+    query = """
+    UPDATE "Course_Rating"
+    SET updated_at = NOW()"""
+
+    for key in data.keys():
+      query = f"{query}, {key}='{data[key]}'"
+    
+    query = f"""{query}
+    WHERE course_rating_id = {self.course_rating_id}
+    ;"""
+
+    return  query

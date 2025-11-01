@@ -1,3 +1,5 @@
+from datetime import date
+
 from app.extensions import db, orm
 from app.models.facility import Facility
 
@@ -16,7 +18,7 @@ class Course(db.Model):
 
   @orm.validates('hole_count')
   def validate_hole_count(self, key, value):
-    if not 0 < value < 18:
+    if not 0 < value <= 18:
       raise ValueError(f'Invalid Hole Count - {value}')
     return value
 
@@ -28,15 +30,44 @@ class Course(db.Model):
       raise ValueError(f'Invalid Course Established Year - {value} - Courses cannot have a future dated established year, it is likely this facility is still under construction, please resumbit this course once it opens.')
     return value
 
-  def __init__(self, course_id, facility_id=None, name=None, hole_count=None, esablished=None, architect=None, handle=None, created_at=None, updated_at=None):
+  def __init__(self, course_id, facility_id=None, name=None, hole_count=None, established=None, architect=None, handle=None, created_at=None, updated_at=None):
     self.course_id = course_id
     self.facility_id = facility_id
     self.name = name
     self.hole_count = hole_count
-    self.esablished = esablished
+    self.established = established
     self.architect = architect
     self.handle = handle
 
   def as_dict(self):
     keys = ['created_at', 'updated_at']
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
+
+  def insert_row(self, data):
+    keys=''
+    values=''
+
+    for k in data.keys():
+      keys = f'{keys}{'' if keys == '' else ', '}{k}'
+      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
+
+    query = f"""
+    INSERT INTO "Course" ({keys})
+    VALUES ({values})
+    ;"""
+
+    return query
+
+  def update_row(self, update_dict):
+    query = """
+    UPDATE "Course"
+    SET updated_at = NOW()"""
+
+    for key in update_dict.keys():
+      query = f"{query}, {key}='{update_dict[key]}'"
+    
+    query = f"""{query}
+    WHERE facility_id = {self.course_id}
+    ;"""
+
+    return  query

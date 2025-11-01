@@ -14,7 +14,7 @@ class Tee(db.Model):
 
   @orm.validates('hole_count')
   def validate_hole_count(self, key, value):
-    if not 0 < value < 18:
+    if not 0 < value <= 18:
       raise ValueError(f'Invalid Hole Count - {value} - Courses must have a hole count between 1 to 18')
     return value
 
@@ -41,3 +41,33 @@ class Tee(db.Model):
   def as_dict(self):
     keys = ['created_at', 'updated_at']
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
+
+  def insert_row(self, data):
+    keys=''
+    values=''
+
+    for k in data.keys():
+      keys = f'{keys}{'' if keys == '' else ', '}{k}'
+      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
+
+    query = f"""
+    INSERT INTO "Tee" ({keys})
+    VALUES ({values})
+    RETURNING tee_id
+    ;"""
+
+    return query
+
+  def update_row(self, data):
+    query = """
+    UPDATE "Tee"
+    SET updated_at = NOW()"""
+
+    for key in data.keys():
+      query = f"{query}, {key}='{data[key]}'"
+    
+    query = f"""{query}
+    WHERE tee_id = {self.tee_id}
+    ;"""
+
+    return  query

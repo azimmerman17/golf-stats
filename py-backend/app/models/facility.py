@@ -76,7 +76,6 @@ class Facility(db.Model):
     values=''
 
     for k in data.keys():
-      print(f"'{k}' '{data[k]}'")
       keys = f'{keys}{'' if keys == '' else ', '}{k}'
       values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
 
@@ -93,7 +92,7 @@ class Facility(db.Model):
     SET updated_at = NOW()"""
 
     for key in update_dict.keys():
-      query = f"{query}, {key} = '{update_dict[key]}'"
+      query = f"{query}, {key}='{update_dict[key]}'"
     
     query = f"""{query}
     WHERE facility_id = {self.facility_id}

@@ -18,18 +18,21 @@ class Hole(db.Model):
 
   @orm.validates('number')
   def validate_number(self, key, value):
+    if value is not None:
       if not 1 <= value <= 18:
         raise ValueError(f'Invalid Hole Number - {value} - Hole Number must be between 1 and 18')
       return value
 
   @orm.validates('yards')
   def validate_yards(self, key, value):
+    if value is not None:
       if not 0 <= value <= 999:
         raise ValueError(f'Invalid Yards - {value} - Length(yds) must be between 1 and 999')
       return value
 
   @orm.validates('meters')
   def validate_meters(self, key, value):
+    if value is not None:
       if not 0 <= value <= 999:
         raise ValueError(f'Invalid Meters - {value} - Length(m) must be between 1 and 999')
       return value
@@ -37,6 +40,7 @@ class Hole(db.Model):
   @orm.validates('par_male')
   @orm.validates('par_female')
   def validate_hole_par(self, key, value):
+    if value is not None:
       if not 3 <= value <= 6:
         raise ValueError(f'Invalid Hole Par - {value} - Par must be between 3 and 6 for a hole')
       return value
@@ -44,6 +48,7 @@ class Hole(db.Model):
   @orm.validates('si_male')
   @orm.validates('si_female')
   def validate_hole_si(self, key, value):
+    if value is not None:
       if not 1 <= value <= 18:
         raise ValueError(f'Invalid Stroke Index - {value} - Stroke Index must be between 1 and 18 for a hole')
       return value
@@ -63,3 +68,30 @@ class Hole(db.Model):
   def as_dict(self):
     keys = ['created_at', 'updated_at']
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
+
+  def insert_row(self, data):
+    keys=''
+    values=''
+
+    for k in data.keys():
+      keys = f'{keys}{'' if keys == '' else ', '}{k}'
+      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
+
+    query = f"""
+    INSERT INTO "Hole" ({keys})
+    VALUES ({values})
+    ;"""
+
+    return query
+
+  def update_row(self, data):
+    query = """
+    UPDATE "Hole"
+    SET updated_at = NOW()"""
+
+    for key in data.keys():
+      query = f"{query}, {key}='{data[key]}'"
+    
+    query = f"""{query}
+    WHERE hole_id = {self.hole_id}
+    ;"""
