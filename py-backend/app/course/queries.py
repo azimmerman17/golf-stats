@@ -16,3 +16,5 @@ def get_course(id=None, key='course_id'):
     ;"""
     
   return query
+
+

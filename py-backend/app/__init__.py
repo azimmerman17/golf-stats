@@ -27,11 +27,13 @@ def create_app(config_class=Config):
   Migrate(app, facility_season.db) 
 
   # Register Blueprints
+  #FACILITY BLUEPRINTS
   from app.facility import bp as facility_bp
   app.register_blueprint(facility_bp)
-
   from app.course import bp as course_bp
   app.register_blueprint(course_bp)
+  from app.tee import bp as tee_bp
+  app.register_blueprint(tee_bp)
 
  
   @app.route('/')

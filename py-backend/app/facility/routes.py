@@ -6,6 +6,8 @@ from app.facility import bp
 from app.facility.functions import translate_ghin_data
 from app.facility.queries import check_unique_facility, get_facility
 from app.course.queries import get_course
+from app.course.functions import build_course
+
 from app.functions.sql_functions import run_query, open_conn, check_conn
 
 from app.models.facility import Facility
@@ -113,7 +115,7 @@ def facility_id(id, config_class=Config):
     return {
       'facility': Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict(),
       'season': Facility_Season(f['facility_season_id'], facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict(),
-      'course': [Course(c['course_id'], c['facility_id'], c['name'], c['hole_count'], c['established'], c['architect'], c['handle']).as_dict() for c in c_res]
+      'course': build_course(c_res)
     }
   # CREATE A NEW COURSE AT FACILITY
   elif request.method == 'POST':

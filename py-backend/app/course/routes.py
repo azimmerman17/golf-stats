@@ -3,7 +3,9 @@ from markupsafe import escape
 
 from app.extensions import Engine
 from app.course import bp
+from app.course.functions import build_course
 from app.course.queries import get_course
+from app.tee.queries import get_tee
 from app.functions.sql_functions import run_query, open_conn, check_conn
 
 
@@ -28,13 +30,13 @@ def course(config_class=Config):
   else:
     return {'msg': 'Method not allowed'}, 405
 
-
 # GET, UPDATE, OR DELETE COURSE BY ID, CREATE NEW TEE FOR COURSE
 @bp.route('/<int:id>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def course_id(id, config_class=Config):
   if request.method == 'GET':
     # get the course
     course_query = get_course(escape(id))
+    tee_query = get_tee(escape(id), 'course_id')
 
     try:
       res = run_query(course_query).mappings().all()
@@ -42,9 +44,12 @@ def course_id(id, config_class=Config):
       print('ERROR: ', error)
       return {'msg': 'Error retrieving course list'}, 500
 
-    c = res[0]
+    c = build_course(res)
 
-    return Course(c['course_id'], c['facility_id'], c['name'], c['hole_count'], c['established'], c['architect'], c['handle']).as_dict()
+    return c
+  # INSERT NEW TEE ROW FOR COURSE
+  if request.method == 'POST':
+    return 'build process with the tee route'
   # UPDATE COURSE INFORMATION
   elif request.method == 'PUT':
     # get course - validate course exists
@@ -79,6 +84,7 @@ def course_id(id, config_class=Config):
       return {'msg': 'Course record updated successfully'}, 200
     else:
       return {'msg': 'Error updating course record'}, 500
+  # DELETE COURSE
   elif request.method == 'DELETE':
     # create delete query
     delete_query = Course(escape(id)).delete_row(escape(id))
