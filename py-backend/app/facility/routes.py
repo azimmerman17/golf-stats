@@ -5,12 +5,13 @@ from app.extensions import Engine
 from app.facility import bp
 from app.facility.functions import translate_ghin_data
 from app.facility.queries import check_unique_facility, get_facility
+from app.course.queries import get_course
 from app.functions.sql_functions import run_query, open_conn, check_conn
 
 from app.models.facility import Facility
 from app.models.facility_season import Facility_Season
+from app.models.course import Course
 
-Facility_Season
 from config import Config
 
 # GET ALL FACILITIES, CREATE NEW FACILITY
@@ -20,18 +21,22 @@ def facility(config_class=Config):
   if request.method == 'GET':
     # get all the facilities query
     all_query = get_facility()
-    
+
+    # get all the courses
+    all_course_query = get_course()
+
     try:
       res = run_query(all_query).mappings().all()
+      c_res = run_query(all_course_query).mappings().all()
+
     except Exception as error:
       print('ERROR: ', error)
       return {'msg': 'Error retrieving facility list'}, 500
 
-
-
     return [{
       'facility': Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict(),
-      'season': Facility_Season(f['facility_season_id'], facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict()
+      'season': Facility_Season(f['facility_season_id'], facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict(),
+      'course': [Course(c['course_id'], c['facility_id'], c['name'], c['hole_count'], c['established'], c['architect'], c['handle']).as_dict() for c in c_res if c['facility_id'] == f['facility_id']]
     } for f in res]
   # CREATE NEW FACILITY
   elif request.method == 'POST':
@@ -88,9 +93,13 @@ def facility_id(id, config_class=Config):
   if request.method == 'GET':
     # get facilities query
     query = get_facility(escape(id))
+    course_query = get_course(escape(id), 'facility_id')
     
     try:
       res = run_query(query).mappings().all()
+      c_res = run_query(course_query).mappings().all()
+      
+
     except Exception as error:
       print('ERROR: ', error)
       return {'msg': 'Error retrieving facility'}, 500
@@ -103,7 +112,8 @@ def facility_id(id, config_class=Config):
     # Future work, build and return the entire facility
     return {
       'facility': Facility(f['facility_id'], f['name'], classification=f['classification'], hole_count=f['hole_count'], established=f['established'], handle=f['handle'], website=f['website'], address=f['address'], city=f['city'], state=f['state'], country=f['country'], geo_lat=f['geo_lat'], geo_lon=f['geo_lon']).as_dict(),
-      'season': Facility_Season(f['facility_season_id'], facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict()
+      'season': Facility_Season(f['facility_season_id'], facility_id=f['facility_id'], start_date=f['start_date'], end_date=f['end_date'], year_round=f['year_round']).as_dict(),
+      'course': [Course(c['course_id'], c['facility_id'], c['name'], c['hole_count'], c['established'], c['architect'], c['handle']).as_dict() for c in c_res]
     }
   # CREATE A NEW COURSE AT FACILITY
   elif request.method == 'POST':

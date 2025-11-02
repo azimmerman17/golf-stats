@@ -18,16 +18,18 @@ class Course(db.Model):
 
   @orm.validates('hole_count')
   def validate_hole_count(self, key, value):
-    if not 0 < value <= 18:
-      raise ValueError(f'Invalid Hole Count - {value}')
-    return value
+    if value is not None:
+      if not 0 < value <= 18:
+        raise ValueError(f'Invalid Hole Count - {value}')
+      return value
 
   @orm.validates('established')
   def validate_established(self, key, value):
-    if value < 1400:
-      raise ValueError(f'Invalid Course Established Year - {value} - The first modern day course was esablished after 1400, please sumbit a later date.')
-    elif value > date.today().year:
-      raise ValueError(f'Invalid Course Established Year - {value} - Courses cannot have a future dated established year, it is likely this facility is still under construction, please resumbit this course once it opens.')
+    if value is not None:
+      if value < 1400:
+        raise ValueError(f'Invalid Course Established Year - {value} - The first modern day course was esablished after 1400, please sumbit a later date.')
+      elif value > date.today().year:
+        raise ValueError(f'Invalid Course Established Year - {value} - Courses cannot have a future dated established year, it is likely this facility is still under construction, please resumbit this course once it opens.')
     return value
 
   def __init__(self, course_id, facility_id=None, name=None, hole_count=None, established=None, architect=None, handle=None, created_at=None, updated_at=None):
@@ -58,7 +60,7 @@ class Course(db.Model):
 
     return query
 
-  def update_row(self, update_dict):
+  def update_row(self, update_dict, id_key='course_id'):
     query = """
     UPDATE "Course"
     SET updated_at = NOW()"""
@@ -67,7 +69,15 @@ class Course(db.Model):
       query = f"{query}, {key}='{update_dict[key]}'"
     
     query = f"""{query}
-    WHERE facility_id = {self.course_id}
+    WHERE {id_key} = {self.course_id}
     ;"""
 
     return  query
+
+  def delete_row(self, id, id_key='course_id'):
+    query = f"""
+    DELETE FROM "Course" 
+    WHERE  {id_key} = {id}
+    ;"""
+
+    return query
