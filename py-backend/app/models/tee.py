@@ -14,21 +14,24 @@ class Tee(db.Model):
 
   @orm.validates('hole_count')
   def validate_hole_count(self, key, value):
-    if not 0 < value <= 18:
-      raise ValueError(f'Invalid Hole Count - {value} - Courses must have a hole count between 1 to 18')
-    return value
+    if value is not None:
+      if not 0 < value <= 18:
+        raise ValueError(f'Invalid Hole Count - {value} - Courses must have a hole count between 1 to 18')
+      return value
 
   @orm.validates('yards')
   def validate_yardage(self, key, value):
-    if value < 0:
-      raise ValueError(f'Invalid Yardage - {value} - Course must have a positive length')
-    return value
+    if value is not None:
+      if value < 0:
+        raise ValueError(f'Invalid Yardage - {value} - Course must have a positive length')
+      return value
 
   @orm.validates('meters')
   def validate_yardage(self, key, value):
-    if value < 0:
-      raise ValueError(f'Invalid Yardage - {value} - Course must have a length')
-    return value
+    if value is not None:
+      if value < 0:
+        raise ValueError(f'Invalid Yardage - {value} - Course must have a length')
+      return value
 
   def __init__(self, tee_id, course_id=None, name=None, yards=None, meters=None, hole_count=None, created_at=None, updated_at=None):
     self.tee_id = tee_id
