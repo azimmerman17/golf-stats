@@ -101,7 +101,6 @@ def facility_id(id, config_class=Config):
       res = run_query(query).mappings().all()
       c_res = run_query(course_query).mappings().all()
       
-
     except Exception as error:
       print('ERROR: ', error)
       return {'msg': 'Error retrieving facility'}, 500

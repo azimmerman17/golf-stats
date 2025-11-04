@@ -34,6 +34,8 @@ def create_app(config_class=Config):
   app.register_blueprint(course_bp)
   from app.tee import bp as tee_bp
   app.register_blueprint(tee_bp)
+  from app.hole import bp as hole_bp
+  app.register_blueprint(hole_bp)
 
  
   @app.route('/')

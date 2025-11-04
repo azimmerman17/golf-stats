@@ -1,8 +1,10 @@
 from app.functions.sql_functions import run_query
 from app.tee.queries import get_tee
+from app.hole.queries import get_hole
 
 from app.models.course import Course
 from app.models.tee import Tee
+from app.models.hole import Hole
 
 # FUNCTION TO BUILD COURSE DICT
 def build_course(courses):
@@ -18,9 +20,31 @@ def build_course(courses):
   except Exception as error:
     print('ERROR: ', error)
     return {'msg': 'Error retrieving Tees'}, 500
+
+  # get holes and ratings for the courses 
+  tees = [Tee(t['tee_id'], t['course_id'], t['name'], t['yards'], t['meters'], t['hole_count']).as_dict() for t in t_res]
+  
+  hole_ids = [str(t1['tee_id']) for t1 in tees]
+  separator = ', '
+  hole_query = get_hole(separator.join(hole_ids), 'tee_id')
+
+
+  try:
+    h_res = run_query(hole_query).mappings().all()
+  except Exception as error:
+    print('ERROR: ', error)
+    return {'msg': 'Error retrieving holes and ratings'}, 500
+
+  for tee in tees:
+    print(tee)
+    tee['holes'] = {
+      'M': [Hole(h['hole_id'], h['tee_id'], h['number'], h['gender'], h['yards'], h['meters'], h['par'], h['si'], h['effective_date']).as_dict() for h in h_res if h['tee_id'] == tee['tee_id'] and h['gender'] == 'M'],
+      'F': [Hole(h['hole_id'], h['tee_id'], h['number'], h['gender'], h['yards'], h['meters'], h['par'], h['si'], h['effective_date']).as_dict() for h in h_res if h['tee_id'] == tee['tee_id'] and h['gender'] == 'F']
+    }
+
   
   return [{
     'course': Course(c['course_id'], c['facility_id'], c['name'], c['hole_count'], c['established'], c['architect'], c['handle']).as_dict(),
-    'tee': [Tee(t['tee_id'], t['course_id'], t['name'], t['yards'], t['meters'], t['hole_count']).as_dict() for t in t_res if t['course_id'] == c['course_id']]
+    'tees': [t for t in tees if t['course_id'] == c['course_id']]
   } for c in courses]
   
