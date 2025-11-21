@@ -36,7 +36,8 @@ def create_app(config_class=Config):
   app.register_blueprint(tee_bp)
   from app.hole import bp as hole_bp
   app.register_blueprint(hole_bp)
-
+  from app.course_rating import bp as course_rating_bp
+  app.register_blueprint(course_rating_bp)
  
   @app.route('/')
   def hello_world():

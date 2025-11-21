@@ -59,7 +59,5 @@ def tee(id, config_class=Config):
       return {'msg': 'Tee record updated successfully'}, 200
     else:
       return {'msg': 'Error updating tee record'}, 500
-
   else:
     return {'msg': 'Method not allowed'}, 405
-

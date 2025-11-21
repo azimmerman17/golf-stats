@@ -20,7 +20,7 @@ class Course_Rating(db.Model):
   @orm.validates('hole_count')
   def validate_hole_count(self, key, value):
     if value is not None:
-      if value != 9 or value != 18:
+      if int(value) != 9 and int(value) != 18:
         raise ValueError(f'Invalid Hole Count - {value} - Invalid Hole Counts, Handicap hole counts must be 9 or 18')
       return value
 

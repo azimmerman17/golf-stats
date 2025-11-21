@@ -8,7 +8,7 @@ from app.models.hole import Hole
 
 from config import Config
 
-# GET HOLE BY ID, UPDATE EXISTING FACILITY
+# GET HOLE BY ID
 @bp.route('/<int:id>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def hole_id(id, config_class=Config):
   # GET HOLE BY ID
