@@ -2,11 +2,13 @@ from app.functions.sql_functions import run_query
 from app.tee.queries import get_tee
 from app.hole.queries import get_hole
 from app.course_rating.queries import get_course_rating
+from app.hole_geo.queries import get_hole_geo
 
 from app.models.course import Course
 from app.models.tee import Tee
 from app.models.hole import Hole
 from app.models.course_rating import Course_Rating
+from app.models.hole_geo import Hole_Geo
 
 # FUNCTION TO BUILD COURSE DICT
 def build_course(courses):
@@ -16,21 +18,24 @@ def build_course(courses):
   course_ids = [str(c1['course_id']) for c1 in courses]
   separator = ', '
   tee_query = get_tee(separator.join(course_ids), 'course_id')
+  gps_query = get_hole_geo(separator.join(course_ids), 'course_id')
   
   try:
     t_res = run_query(tee_query).mappings().all()
+    g_res = run_query(gps_query).mappings().all()
   except Exception as error:
     print('ERROR: ', error)
     return {'msg': 'Error retrieving Tees'}, 500
 
-  # get holes and ratings for the courses 
   tees = [Tee(t['tee_id'], t['course_id'], t['name'], t['yards'], t['meters'], t['hole_count']).as_dict() for t in t_res]
-  
+  hole_gps = [Hole_Geo(g['hole_geo_id'], g['course_id'], g['number'], g['handle'], g['tee_lat'], g['tee_lon'], g['dl_lat'], g['dl_lon'], g['dl2_lat'], g['dl2_lon'], g['green_center_lat'], g['green_center_lon'], g['green_front_lat'], g['green_front_lon'], g['green_back_lat'], g['green_back_lon'], g['zoom'], g['rotation'], g['green_depth']).as_dict() for g in g_res]
+
+
+  # get holes and ratings for the courses 
   hole_ids = [str(t1['tee_id']) for t1 in tees]
   separator = ', '
   hole_query = get_hole(separator.join(hole_ids), 'tee_id')
   rating_query = get_course_rating(separator.join(hole_ids), 'tee_id')
-
 
   try:
     h_res = run_query(hole_query).mappings().all()   
@@ -52,6 +57,7 @@ def build_course(courses):
 
   return [{
     'course': Course(c['course_id'], c['facility_id'], c['name'], c['hole_count'], c['established'], c['architect'], c['handle']).as_dict(),
-    'tees': [t for t in tees if t['course_id'] == c['course_id']]
+    'tees': [t for t in tees if t['course_id'] == c['course_id']],
+    'gps': [g for g in hole_gps if g['course_id'] == c['course_id']]
   } for c in courses]
   
