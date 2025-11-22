@@ -25,7 +25,7 @@ def cours_rating_id(id, config_class=Config):
       return {'msg': 'Error: could not retrieve the requested course rating'}, 500
     
     r = res[0]
-    print(r)
+
 
     return Course_Rating(r['course_rating_id'], r['tee_id'], r['name'], r['hole_count'], r['gender'], r['start_hole'], r['course_rating'], r['slope'],  r['par'], r['bogey_rating'], r['effective_date']).as_dict()
   # UPDATING COURSE RATING 

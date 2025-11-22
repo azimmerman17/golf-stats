@@ -70,7 +70,7 @@ class Hole_Geo(db.Model):
         raise ValueError(f'Invalid Longitude Value - {key}: {value} - The maximum and minimun longitude values on Earth is +/- 180 degrees, please check and resubmit your coordinates')
       return value
 
-  def __init__(self, hole_geo_id, course_id = None, number = None, handle = None, tee_lat = None, tee_lon = None, dl_lat = None, dl_lon = None, dl2_lat = None, dl2_lon = None, green_center_lat = None, green_center_lon = None, green_front_lat = None, green_front_lon = None, green_back_lat = None, green_back_lon = None, zoom = None, rotation = None, green_depth = None, created_at = None, updated_at = None):
+  def __init__(self, hole_geo_id, course_id=None, number=None, handle=None, tee_lat=None, tee_lon=None, dl_lat=None, dl_lon=None, dl2_lat=None, dl2_lon=None, green_center_lat=None, green_center_lon=None, green_front_lat=None, green_front_lon=None, green_back_lat=None, green_back_lon=None, zoom=None, rotation=None, green_depth=None, created_at=None, updated_at=None):
     self.hole_geo_id = hole_geo_id
     self.course_id = course_id
     self.number = number
