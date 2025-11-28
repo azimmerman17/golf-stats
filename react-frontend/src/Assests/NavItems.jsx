@@ -1,5 +1,6 @@
 const NavItems = [
-  {name: 'Course', icon: 'Course', path: 'course', login: false, role: 'all'},
+  {name: 'Home', icon: 'Home', path: '/', login: false, role: 'all'},  
+  {name: 'Course', icon: 'Courses', path: '/course', login: false, role: 'all'},
   {name: 'Login', icon: 'Login', path: '/', login: false, role: 'all'},
   {name: 'Logout', icon: 'Logout', path: '/', login: true, role: 'all'},
 

@@ -12,6 +12,10 @@
   margin-bottom: 100px;
 }
 
+.breadcrumb-sm {
+  font-size: .75em;
+}
+
 
 @keyframes logo-spin {
   from {
