@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 from datetime import timedelta
 
@@ -14,3 +15,6 @@ Engine = db.create_engine(
   pool_size=20,
   max_overflow=5
 )
+
+# CORS
+cors = CORS()

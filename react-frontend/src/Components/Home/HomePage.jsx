@@ -17,7 +17,7 @@ const HomePage = ({}) => {
 
     return (
       <Col className='mx-auto p-1' key={`HPcard-${title}`}>
-        <DisplayCards title={title} icon={icon} page={page} path={path} space={space}/>
+        <DisplayCards title={title} icon={icon} page={page} path={path} space={space} />
       </Col>
     )
   })

@@ -1,12 +1,13 @@
 import { IoGolfSharp, IoLogInOutline, IoLogOutOutline, IoPerson, IoGolf } from 'react-icons/io5';
-import { FaHouseChimney } from 'react-icons/fa6';
+import { FaHouseChimney, FaPlus } from 'react-icons/fa6';
+
 
 const GetIcon = (iconName) => {
-
-  console.log(iconName)
   switch (iconName) {
     case 'Courses':
       return <IoGolfSharp />
+    case 'Course Plus':
+      return <><FaPlus /><IoGolfSharp /></>
     case 'Home':
       return <FaHouseChimney />
     case 'Login':
@@ -14,7 +15,7 @@ const GetIcon = (iconName) => {
     case 'Logout':
       return <IoLogOutOutline />
     case 'Profile':
-      return <IoPerson />
+      return <IoPerson />  
     default:
       return null
   }

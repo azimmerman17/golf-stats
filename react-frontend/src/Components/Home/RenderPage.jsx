@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { CurrentPage } from '../../Contexts/CurrentPageContext'
 
 import HomePage from './HomePage'
+import CourseHome from '../Course/CourseHome'
 
 
 const RenderPage = ({ path, setTitle }) => {
@@ -18,7 +19,7 @@ const RenderPage = ({ path, setTitle }) => {
     case 'course':
       switch (currentPage) {
         default:
-          return path
+          return <CourseHome />
       }
 
 

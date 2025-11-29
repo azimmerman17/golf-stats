@@ -16,6 +16,9 @@
   font-size: .75em;
 }
 
+.small-text {
+  font-size: .75em;
+}
 
 @keyframes logo-spin {
   from {

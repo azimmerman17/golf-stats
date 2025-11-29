@@ -1,13 +1,14 @@
 from flask import Flask
 from flask_migrate import Migrate
+from flask_cors import CORS
 
-from app.extensions import db
+from app.extensions import db, cors
 
 # FACILITY MODELS
 from app.models import facility, course, tee, course_rating, hole, hole_geo, facility_season
 
 from config import Config
-
+ 
 def create_app(config_class=Config):
   app = Flask(__name__)
 
@@ -16,6 +17,7 @@ def create_app(config_class=Config):
 
   # Initialize Flask extensions
   db.init_app(app)
+  cors = CORS(app, resources={r'/*'})   
 
   # Mirgrate Models
   Migrate(app, facility.db)
