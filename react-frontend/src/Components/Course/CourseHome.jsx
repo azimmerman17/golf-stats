@@ -15,7 +15,6 @@ import CourseCard from './CourseCard';
 const CourseHome = ({}) => {
   const { courseList, setCourseList} = useContext(CourseList)
 
-
   const breadcrumbList = [
     {name: 'Home', path: '/', active: true},
     {name: 'Courses', path: '/course', active: false}
@@ -47,7 +46,7 @@ const CourseHome = ({}) => {
   return (
      <Container fluid>
       <Row>
-          <Breadcrumbs list={breadcrumbList} />
+        <Breadcrumbs list={breadcrumbList} />
       </Row>
       <Row>
         <Card border='danger' className='border border-5 px-2'>

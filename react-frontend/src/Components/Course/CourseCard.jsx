@@ -7,20 +7,22 @@ import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import { CurrentPage } from '../../Contexts/CurrentPageContext'
+import { CurrentFacility } from '../../Contexts/CurrentFacilityContext';
 
 const CourseCard = ({ item }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { currentPage, setCurrentPage } = useContext(CurrentPage)
+  const { currentFacility, setCurrentFacility } = useContext(CurrentFacility)
+
   const { facility } = item
   const { handle, name, facility_id, city, country, state } = facility
   
   const handleClick = (e, id) => {
-    const new_facility_id = id
-    // setCurrentFacility(id)
-    // setCurrentPage('Facility')
     setSearchParams({ facility_id: id });
+    setCurrentPage('facility')
+    console.log(currentFacility)
   }
-
+  
   return (
     <ListGroup.Item className='px-1' onClick={e => handleClick(e, facility_id)}>
       <Container fluid className='px-0'>

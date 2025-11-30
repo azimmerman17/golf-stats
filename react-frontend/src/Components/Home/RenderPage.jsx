@@ -1,12 +1,15 @@
 import { useContext } from 'react' 
+import { useSearchParams } from 'react-router-dom';
 
 import { CurrentPage } from '../../Contexts/CurrentPageContext'
 
 import HomePage from './HomePage'
 import CourseHome from '../Course/CourseHome'
+import FacilityHome from '../Course/Facility/FacilityHome'
 
 
 const RenderPage = ({ path, setTitle }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { currentPage, setCurrentPage } = useContext(CurrentPage)
 
   setTitle(`Golf Statitics App - ${path.split(' ').map(word => word[0].toUpperCase() + word.slice(1)).join(' ')}`)
@@ -18,7 +21,10 @@ const RenderPage = ({ path, setTitle }) => {
     // Course Group
     case 'course':
       switch (currentPage) {
+        case 'facility':
+          return  <FacilityHome />
         default:
+          if (searchParams.get('facility_id')) return  <FacilityHome />
           return <CourseHome />
       }
 

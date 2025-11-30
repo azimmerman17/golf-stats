@@ -9,7 +9,7 @@ const Breadcrumbs = ({ list }) => {
   const listItems = list.map((item, i) => {
     const  { name, path, page, active } = item
 
-    const handleClick = (page, path) => {
+    const handleClick = (path, page) => {
       if (page) setCurrentPage(page)
       else location.replace(path)
     }

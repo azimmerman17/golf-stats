@@ -25,7 +25,7 @@ def build_course(courses):
     g_res = run_query(gps_query).mappings().all()
   except Exception as error:
     print('ERROR: ', error)
-    return {'msg': 'Error retrieving Tees'}, 500
+    return {'msg': 'Error retrieving Tee date, course may not yet be loaded into app'}
 
   tees = [Tee(t['tee_id'], t['course_id'], t['name'], t['yards'], t['meters'], t['hole_count']).as_dict() for t in t_res]
   hole_gps = [Hole_Geo(g['hole_geo_id'], g['course_id'], g['number'], g['handle'], g['tee_lat'], g['tee_lon'], g['dl_lat'], g['dl_lon'], g['dl2_lat'], g['dl2_lon'], g['green_center_lat'], g['green_center_lon'], g['green_front_lat'], g['green_front_lon'], g['green_back_lat'], g['green_back_lon'], g['zoom'], g['rotation'], g['green_depth']).as_dict() for g in g_res]
@@ -42,7 +42,7 @@ def build_course(courses):
     r_res = run_query(rating_query).mappings().all()
   except Exception as error:
     print('ERROR: ', error)
-    return {'msg': 'Error retrieving holes and ratings'}, 500
+    return {'msg': 'Error retrieving holes and ratings , course may not yet be loaded into app'}
 
   for tee in tees:
     print(tee)
