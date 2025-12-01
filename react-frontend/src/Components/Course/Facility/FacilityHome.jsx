@@ -11,6 +11,7 @@ import { CurrentFacility } from '../../../Contexts/CurrentFacilityContext';
 import Breadcrumbs from '../../Home/BreadCrumbs';
 import FacilityHeader from './FacilityHeader';
 import FacilityHomeTab from './FacilityHomeTab';
+import FacilityContactTab from './FacilityContactTab';
 
 const FacilityHome = ({}) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -51,7 +52,7 @@ const tabLinks = tabs.map(tab => {
       case 'Courses':
         return 'Facility Courses'      
       case 'Contact':
-        return 'Facility Contact Info'
+        return <FacilityContactTab facility={facility} />
     }
   }
   
