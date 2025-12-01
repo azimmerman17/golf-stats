@@ -9,7 +9,7 @@ const FacilityHeader = ({facility, season}) => {
   const { handle, name, country, state, city } = facility
   const { end_date, start_date, year_round } = season
   return (
-    <Container fluid className='border-bottom border-2 border-danger p-1 shadow-lg'>
+    <Container fluid className='border border-3 border-danger rounded p-1 shadow-lg'>
       <Row>
         <Image src={`https://logos.bluegolf.com/${handle}/profile.png`} alt={`${name} Logo`} style={{ maxWidth: '100px'}} className='m-auto'/>
       </Row>
