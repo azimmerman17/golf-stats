@@ -2,9 +2,10 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import InfoDisplay from '../../../Functions/InfoDisplay'
+import FacilityMap from '../../Map/FacilityMap'
 
 const FacilityContactTab = ({ facility }) => {
-  const { address, city, country, facility_id, geo_lat, geo_lon, state, website, name } = facility
+  const { address, city, country, state, website, name } = facility
 
   const dataList = [
     {data: `${address}`, label: 'ADDRESS'},
@@ -28,9 +29,9 @@ const FacilityContactTab = ({ facility }) => {
       <Row>
         {display}
       </Row>
-      {/* <Row>
-        <p className='text-center'>MAP (FUTURE DEVELOPMENT)</p>
-      </Row> */}
+      <Row>
+       <FacilityMap facility={facility}/>
+      </Row>
     </Container>
   )
 }

@@ -20,6 +20,12 @@
   font-size: .75em;
 }
 
+#contact-map {
+  height: 75vh; 
+  width: 97%;
+}
+
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
