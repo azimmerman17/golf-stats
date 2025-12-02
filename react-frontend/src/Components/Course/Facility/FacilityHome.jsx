@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav';
 
 import { CurrentPage } from '../../../Contexts/CurrentPageContext'
@@ -12,6 +11,7 @@ import Breadcrumbs from '../../Home/BreadCrumbs';
 import FacilityHeader from './FacilityHeader';
 import FacilityHomeTab from './FacilityHomeTab';
 import FacilityContactTab from './FacilityContactTab';
+import FacilityCourseTab from './FacilityCourseTab';
 
 const FacilityHome = ({}) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -50,7 +50,7 @@ const tabLinks = tabs.map(tab => {
       case 'Home':
         return <FacilityHomeTab facility={facility} season={season} course={course.length}/>
       case 'Courses':
-        return 'Facility Courses'      
+        return <FacilityCourseTab course_list={course} />    
       case 'Contact':
         return <FacilityContactTab facility={facility} />
     }

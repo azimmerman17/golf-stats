@@ -23,8 +23,11 @@ const RenderPage = ({ path, setTitle }) => {
       switch (currentPage) {
         case 'facility':
           return  <FacilityHome />
+        case 'course':
+          return 'course'
         default:
           if (searchParams.get('facility_id')) return  <FacilityHome />
+          else if (searchParams.get('facility_id') && searchParams.get('course_id')) return  'course'
           return <CourseHome />
       }
 
