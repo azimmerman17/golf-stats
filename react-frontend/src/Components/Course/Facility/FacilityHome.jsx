@@ -12,6 +12,7 @@ import FacilityHeader from './FacilityHeader';
 import FacilityHomeTab from './FacilityHomeTab';
 import FacilityContactTab from './FacilityContactTab';
 import FacilityCourseTab from './FacilityCourseTab';
+import DisplayTabs from '../../../Functions/DisplayTabs';
 
 const FacilityHome = ({}) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,14 +38,6 @@ const FacilityHome = ({}) => {
     'Contact'
   ]
 
-const tabLinks = tabs.map(tab => {
-    return (
-      <Nav.Item key={`facility-navtab-${tab}`}>
-          <Nav.Link className={`bg-danger${facilityTab === tab ? ' text-white border-black border-2 fw-bold' :'-subtle text-black border-bottom'} rounded-top`}  onClick={e => setFacilityTab(tab)}>{tab}</Nav.Link>
-      </Nav.Item>
-    )
-  })
-
   const tabView = (tab) => {
     switch (tab) {
       case 'Home':
@@ -65,9 +58,7 @@ const tabLinks = tabs.map(tab => {
         <FacilityHeader facility={facility} season={season} />
       </Row>
       <Row className='border border-danger border-3 rounded shadow-lg mb-3'>
-        <Nav justify variant='tabs' className='border-bottom border-black border-3 p-1' defaultActiveKey='Home' activeKey='Home'>
-          {tabLinks}
-        </Nav>
+        <DisplayTabs tabs={tabs} currentTab={facilityTab} page='facility' setCurrentTab={setFacilityTab} defaultKey={'Home'} />
         {tabView(facilityTab)}
       </Row>
     </Container>

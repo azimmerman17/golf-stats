@@ -4,32 +4,33 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 import GetFlag from '../../../Functions/GetFlag'
 import TranslateCountryCode from '../../../Functions/TranslateCountryCode'
+import InfoDisplay from '../../../Functions/InfoDisplay'
 
-const FacilityHeader = ({facility, season}) => {
-  const { handle, name, country, state, city } = facility
-  const { end_date, start_date, year_round } = season
-  
+const CourseHeader = ({ course, facility, season }) => {
+
+  const {established, architect, course_id, facility_id, handle,hole_count, name } = course
+  const { city, state, country } = facility
+
   return (
     <Container fluid className='border border-3 border-danger rounded p-1 shadow-lg'>
       <Row>
         <Image src={`https://logos.bluegolf.com/${handle}/profile.png`} alt={`${name} Logo`} style={{ maxWidth: '100px'}} className='m-auto'/>
       </Row>
       <Row>
-         <h4 className='mx-auto mb-0 text-center align-text-bottom'>{name}</h4>
+         <h4 className='mx-auto mb-0 text-center align-text-bottom'>{facility.name}</h4>
+         {facility.name == name ? null : <h4 className='mx-auto mb-0 text-center align-text-bottom'>{name}</h4>}
          <p className=' text-center text-secondary small-text'>{city}{state ? ` ${state}` : '' }, {country}</p>
       </Row>
       <Row> 
         <Col className='text-start'>
-          <p className='mb-0 '>{year_round === true ? 'Year Round' : `${start_date} - ${end_date}`}</p>
-          <p className='mb-0 small-text'>Posting Season</p>
+          <InfoDisplay data={architect} label='ARCHITECT' />
         </Col>
         <Col className='text-end'>
-          <div >{GetFlag(TranslateCountryCode(country, 'map'), 40)}</div>
-          {state ? <div>{GetFlag(`us-${state}`, 40)}</div> : null}
+          <InfoDisplay data={established} label='ESTABLISHED' />
         </Col>
       </Row>
-    </Container>    
+    </Container>  
   )
 }
 
-export default FacilityHeader
+export default CourseHeader

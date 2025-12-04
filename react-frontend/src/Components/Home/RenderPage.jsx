@@ -6,6 +6,7 @@ import { CurrentPage } from '../../Contexts/CurrentPageContext'
 import HomePage from './HomePage'
 import CourseHome from '../Course/CourseHome'
 import FacilityHome from '../Course/Facility/FacilityHome'
+import CoursePage from '../Course/Course/CoursePage';
 
 
 const RenderPage = ({ path, setTitle }) => {
@@ -24,10 +25,10 @@ const RenderPage = ({ path, setTitle }) => {
         case 'facility':
           return  <FacilityHome />
         case 'course':
-          return 'course'
+          return <CoursePage />
         default:
-          if (searchParams.get('facility_id')) return  <FacilityHome />
-          else if (searchParams.get('facility_id') && searchParams.get('course_id')) return  'course'
+          if (searchParams.get('facility_id') && searchParams.get('course_id')) return <CoursePage />
+          else if (searchParams.get('facility_id')) return <FacilityHome />
           return <CourseHome />
       }
 
