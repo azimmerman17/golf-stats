@@ -19,7 +19,7 @@ const CourseHeader = ({ course, facility, season }) => {
       <Row>
          <h4 className='mx-auto mb-0 text-center align-text-bottom'>{facility.name}</h4>
          {facility.name == name ? null : <h4 className='mx-auto mb-0 text-center align-text-bottom'>{name}</h4>}
-         <p className=' text-center text-secondary small-text'>{city}{state ? ` ${state}` : '' }, {country}</p>
+         <p className=' text-center text-secondary small-text'>{city}{state ? `, ${state}` : '' }, {country}</p>
       </Row>
       <Row> 
         <Col className='text-start'>

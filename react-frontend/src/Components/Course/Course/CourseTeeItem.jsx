@@ -10,7 +10,6 @@ const CourseTeeItem = ({ tee, i }) => {
   
   // hard coding distance units - will be apart of user settings
   let units = 'yards'
-  
 
   let teeData = [
     {data: yards, label: 'YARDS'},
@@ -67,7 +66,7 @@ const CourseTeeItem = ({ tee, i }) => {
   })
 
   return (
-    <Accordion.Item eventKey={i}>
+    <Accordion.Item eventKey={tee_id}>
       <Accordion.Header>
         <h6>{name}</h6>
       </Accordion.Header>
@@ -76,7 +75,7 @@ const CourseTeeItem = ({ tee, i }) => {
           <Row>
             {dataDisplay}
           </Row>
-          <hr />
+          {menRating.length > 0 ? <hr className='text-danger' /> : null}
           {menRating.length > 0 ? (
             <Row>
               <p className='text-center mb-1'>Men's Ratings</p>
@@ -84,7 +83,7 @@ const CourseTeeItem = ({ tee, i }) => {
             </Row>
             
           ): null}
-          {ladiesRating.length > 0 ? <hr /> : null}
+          {ladiesRating.length > 0 ? <hr className='text-danger' /> : null}
           {ladiesRating.length > 0 ? (
             <Row>
               <p className='text-center mb-1'>Ladies' Ratings</p>

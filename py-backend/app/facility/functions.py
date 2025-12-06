@@ -124,7 +124,7 @@ def translate_holes(tee_id, action, user, tee, conn):
       par_back += hole['Par']
        
     hole_dict = {
-      'hole_id': hole['HoleId'],
+      # 'hole_id': hole['HoleId'],
       'tee_id': tee_id,
       'number': hole['Number'],
       'gender': 'M' if tee['Gender'] == 'Male' else 'F',
@@ -297,7 +297,7 @@ def translate_ghin_data(facility, data, CONFIG):
   
   print(course_msg['msg'])
 
-  #course added, adding course data
+  # course added, adding course data
   geo_msg = insert_geo_data(course_id, data['gps_data'])
 
   return  geo_msg

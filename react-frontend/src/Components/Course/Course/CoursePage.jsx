@@ -11,13 +11,15 @@ import Breadcrumbs from '../../Home/BreadCrumbs';
 import CourseHeader from './CourseHeader';
 import DisplayTabs from '../../../Functions/DisplayTabs';
 import CourseTeesTab from './CourseTeesTab';
+import CourseHolesTab from './CourseHolesTab';
 
 const CoursePage = ({}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { currentFacility, setCurrentFacility } = useContext(CurrentFacility)
   const [courseTab, setCourseTab] = useState('Tees')
+  const [currentTee, setCurrentTee] = useState(null)
 
-   if (!currentFacility) return 'Loading...'
+  if (!currentFacility) return 'Loading...'
 
   const { facility, season } = currentFacility
   const courseId = searchParams.get('course_id')
@@ -25,6 +27,14 @@ const CoursePage = ({}) => {
   const currentCourse = currentFacility.course.filter(c => c.course.course_id == courseId)[0]
   const { course, gps, tees } = currentCourse
   const { name } = course
+
+  // sort tees by length - desending
+  const teesSorted = tees.sort((a, b) =>  b.yards - a.yards)
+  // set current tee if null
+  if (!currentTee) setCurrentTee(teesSorted[0])
+
+  //sort gps by hole number - ascending
+  const gpsSorted = gps.sort((a, b) =>  a.number - a.number)
 
   // console.log(currentCourse)
 
@@ -47,11 +57,11 @@ const CoursePage = ({}) => {
   const viewTab = (tab) => {
     switch (tab) {
       case 'Tees':
-        return <CourseTeesTab tees={tees}/>
+        return <CourseTeesTab tees={teesSorted} currentTee={currentTee} setCurrentTee={setCurrentTee} />
       case 'Handicap':
         return tab
       case 'Holes':
-        return tab
+        return <CourseHolesTab tees={teesSorted} gps={gpsSorted} currentTee={currentTee} setCurrentTee={setCurrentTee} />
     }
   }
   
@@ -63,7 +73,7 @@ const CoursePage = ({}) => {
       <Row>
         <CourseHeader course={course} facility={facility} season={season} />
       </Row>
-      <Row className='border border-danger border-3 rounded shadow-lg mb-3'>
+      <Row className='border border-danger border-3 rounded shadow-lg my-2'>
         <DisplayTabs tabs={tabs} currentTab={courseTab} page='course' setCurrentTab= {setCourseTab} defaultKey={'Tees'} />
         {viewTab(courseTab)}
       </Row>
