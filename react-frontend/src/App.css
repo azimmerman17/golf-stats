@@ -20,12 +20,25 @@
   font-size: .75em;
 }
 
-#contact-map {
-  height: 75vh; 
-  width: 97%;
+.Data-Dialog-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  display: grid;
+  place-items: center;
 }
 
-#hole-map {
+.Data-Dialog {
+  box-sizing: border-box;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  margin: 15px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 4px;
+  max-width: 99%;
+}
+
+#contact-map, #hole-map, #course-map {
   height: 75vh; 
   width: 97%;
 }

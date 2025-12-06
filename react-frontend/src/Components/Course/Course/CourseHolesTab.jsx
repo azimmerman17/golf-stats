@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/esm/Col'
+import Button from 'react-bootstrap/esm/Button'
 
 import Dropdowns from '../../Home/Dropdowns'
 import CourseHoleDetails from './CourseHoleDetails'
 import HoleMap from '../../Map/HoleMap'
+import CourseMap from '../../Map/CourseMap'
 
 const CourseHolesTab = ({ tees, gps, currentTee, setCurrentTee }) => {
   const [currentHole, setCurrentHole] = useState({
@@ -13,7 +15,8 @@ const CourseHolesTab = ({ tees, gps, currentTee, setCurrentTee }) => {
                                                   female: currentTee.holes.F.filter(g => g.number === 1)[0], 
                                                   teeName: currentTee.name
                                                 })
-  const [currentMap, setCurrentMap] = useState(gps.filter(g => g.number == 1)[0])       
+  const [currentMap, setCurrentMap] = useState(gps.filter(g => g.number == 1)[0])   
+  const [displayMap, setdisplayMap] = useState('Hole')
 
   useEffect(() => {
     const setHoleDetails = (g, h) => {
@@ -35,14 +38,18 @@ const CourseHolesTab = ({ tees, gps, currentTee, setCurrentTee }) => {
       else setHoleDetails(newHole.female, newHole) 
     }
   }, [currentHole, currentTee])
-
-  // console.log(currentHole, currentTee)
   
   // Build Dropdowns
   let teeDropdown = []
   tees.forEach(t => {teeDropdown.push({name: t.name, selected: t})})
   let holeDropdown = []
+
   gps.forEach(h => {holeDropdown.push({name: `Hole ${h.number}`, selected: {male: currentTee.holes.M.filter(g => g.number === h.number)[0], female: currentTee.holes.F.filter(g => g.number === h.number)[0]}})})
+
+  const handleMapClick = (display) => {
+    if (display === 'Hole') setdisplayMap('Course')
+    else setdisplayMap('Hole')
+  }
 
   return (
     <Container fluid>
@@ -62,7 +69,12 @@ const CourseHolesTab = ({ tees, gps, currentTee, setCurrentTee }) => {
       </Row>
       <hr className='text-danger' />
       <Row>
-        <HoleMap mapData={currentMap} />
+        {displayMap === 'Hole' ?  <HoleMap mapData={currentMap} /> : <CourseMap gps={gps} />}
+      </Row>
+      <Row className='m-1'>
+        <Button variant='danger' className='fw-bold' onClick={e => handleMapClick(displayMap)}>
+          {displayMap === 'Hole' ? 'View Course Map' : `View Hole #${currentHole.number}`}
+        </Button>
       </Row>
     </Container>
   )
