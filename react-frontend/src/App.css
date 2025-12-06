@@ -25,6 +25,10 @@
   width: 97%;
 }
 
+#hole-map {
+  height: 75vh; 
+  width: 97%;
+}
 
 @keyframes logo-spin {
   from {

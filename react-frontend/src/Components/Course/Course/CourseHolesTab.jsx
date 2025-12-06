@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/esm/Col'
 
 import Dropdowns from '../../Home/Dropdowns'
 import CourseHoleDetails from './CourseHoleDetails'
+import HoleMap from '../../Map/HoleMap'
 
 const CourseHolesTab = ({ tees, gps, currentTee, setCurrentTee }) => {
   const [currentHole, setCurrentHole] = useState({
@@ -12,14 +13,16 @@ const CourseHolesTab = ({ tees, gps, currentTee, setCurrentTee }) => {
                                                   female: currentTee.holes.F.filter(g => g.number === 1)[0], 
                                                   teeName: currentTee.name
                                                 })
+  const [currentMap, setCurrentMap] = useState(gps.filter(g => g.number == 1)[0])       
 
   useEffect(() => {
     const setHoleDetails = (g, h) => {
       const { meters, number, yards, hole_id } = g
       h = {...h, meters, number, yards, hole_id}
       setCurrentHole(h)
+      setCurrentMap(gps.filter(g => g.number == number)[0])
     } 
-    console.log(currentHole)
+
     const { hole_id, teeName, male, female } = currentHole
     if (!hole_id || teeName !== currentTee.name) {
       let newHole = {
@@ -55,10 +58,12 @@ const CourseHolesTab = ({ tees, gps, currentTee, setCurrentTee }) => {
       </Row>
       <hr className='text-danger' />
       <Row>
-        <CourseHoleDetails currentHole={currentHole} />
+        <CourseHoleDetails currentHole={currentHole} greenDepth={currentMap.green_depth}/>
       </Row>
       <hr className='text-danger' />
-      map
+      <Row>
+        <HoleMap mapData={currentMap} />
+      </Row>
     </Container>
   )
 }

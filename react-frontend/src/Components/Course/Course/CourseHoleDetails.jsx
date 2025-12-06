@@ -3,7 +3,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/esm/Col'
 import InfoDisplay from '../../../Functions/InfoDisplay'
 
-const CourseHoleDetails = ({ currentHole }) => {
+import ConvertUnits from '../../../Functions/ConvertUnits'
+
+const CourseHoleDetails = ({ currentHole, greenDepth }) => {
   if (!currentHole) return <p>Loading...</p>
   const { female, male, meters, number, yards } = currentHole
 
@@ -11,15 +13,17 @@ const CourseHoleDetails = ({ currentHole }) => {
   let units = 'yards'
 
   const detailArr = [
-    {data: number, label: 'HOLE NUM'},
+    {data: greenDepth, label: 'GREEN DEPTH'},
     {data: meters, label: 'METERS'},
     {data: yards, label: 'YARDS'}
   ]
 
   const showdetails = detailArr.map(item => {
-    const { data, label } = item
+    let { data, label } = item
 
     if (units === 'yards' && label === 'METERS' || (units === 'meters' && label === 'YARDS')) return null
+    if (units === 'meters' && label === 'GREEN DEPTH') data = ConvertUnits(data, 'yards', 'meters')
+
     return (
       <Col key={`hole-${number}-${label}`}>
         <InfoDisplay data={data} label={label} />
