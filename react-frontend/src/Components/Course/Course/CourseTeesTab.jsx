@@ -3,9 +3,9 @@ import CourseTeeItem from './CourseTeeItem'
 
 const CourseTeesTab = ({ tees, currentTee, setCurrentTee }) => {
   
-  const accordionItems = tees.map((tee, i) => {
+  const accordionItems = tees.map(tee => {
     const { course_id, tee_id} = tee
-    return <CourseTeeItem tee={tee} i={i} key={`course-${course_id}-tee-${tee_id}-accordian`} />
+    return <CourseTeeItem tee={tee} key={`course-${course_id}-tee-${tee_id}-accordian`} />
   })
 
   return (

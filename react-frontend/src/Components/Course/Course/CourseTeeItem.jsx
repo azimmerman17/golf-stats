@@ -3,9 +3,10 @@ import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/esm/Col'
 import Row from 'react-bootstrap/Row'
 import InfoDisplay from '../../../Functions/InfoDisplay'
+import CourseScorecard from './CourseScorecard'
 
-const CourseTeeItem = ({ tee, i }) => {
-  const { course_id, course_rating, hole_count, meters, name, tee_id, yards } = tee
+const CourseTeeItem = ({ tee }) => {
+  const { course_rating, hole_count, meters, name, tee_id, yards } = tee
   const { M, F } = course_rating
   
   // hard coding distance units - will be apart of user settings
@@ -90,6 +91,9 @@ const CourseTeeItem = ({ tee, i }) => {
               {ladiesDisplay}
             </Row>
           ): null}
+          <Row>
+            <CourseScorecard tee={tee} />
+          </Row>
         </Container>
       </Accordion.Body>
     </Accordion.Item>
