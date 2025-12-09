@@ -25,7 +25,7 @@ const Scorecard = ({ holes, gender, scores, hole_count }) => {
 
   holes.forEach(h => {
     const { meters, number, par, yards } = h
-    if (number < 9) {
+    if (number <= 9) {
       yardsOut += yards
       metersOut += meters
       parOut += par

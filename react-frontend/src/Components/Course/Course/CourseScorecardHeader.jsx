@@ -20,8 +20,8 @@ const CourseScorecardHeader = ({ gender, setGender, course_rating, hole_count, n
 
     }
     }, [gender])
-  console.log(course_rating)
-  return (
+
+    return (
     <>
       {courseRatings.length > 1 ? (
         <Row className='text-end'>

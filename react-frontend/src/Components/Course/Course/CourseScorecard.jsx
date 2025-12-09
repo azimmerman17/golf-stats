@@ -6,13 +6,13 @@ import Row from 'react-bootstrap/Row'
 
 import Scorecard from '../../Scorecards/Scorecard';
 import CourseScorecardHeader from './CourseScorecardHeader';
+import CourseDetails from './CourseDetails';
 
 const CourseScorecard = ({ tee }) => {
   const [ open, setOpen ] = useState(false)
   const [ gender, setGender] = useState('Male')
   
   const { course_rating, holes, name, hole_count} = tee
-  console.log(tee)
 
   const [rating, setRating] = useState(course_rating.M.filter(r => r.hole_count === hole_count)[0])
   if (!rating) setRating(course_rating.F.filter(r => r.hole_count === hole_count)[0])
@@ -58,7 +58,7 @@ const CourseScorecard = ({ tee }) => {
                  <Scorecard holes={holes} gender={gender} hole_count={hole_count} className='p-1'/>
                 </Row>
                 <Row>
-                  Course Details
+                  <CourseDetails holes={holes} gender={gender}/>
                 </Row>
               </Container>
             </FloatingFocusManager>
