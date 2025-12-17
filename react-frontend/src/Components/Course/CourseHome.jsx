@@ -1,19 +1,22 @@
 import { useContext } from 'react'
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card'
+import ListGroup from 'react-bootstrap/ListGroup'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import { CourseList } from '../../Contexts/CourseListContext';
+import { CourseList } from '../../Contexts/CourseListContext'
+// import { CurrentPage } from '../../Contexts/CurrentPageContext'
+
 
 
 import Breadcrumbs from '../Home/BreadCrumbs'
-import DisplayCards from '../Home/DisplayCards';
+import DisplayCards from '../Home/DisplayCards'
 import CourseCard from './CourseCard';
 
 const CourseHome = ({}) => {
   const { courseList, setCourseList} = useContext(CourseList)
+  // const { currentPage, setCurrentPage } = useContext(CurrentPage)
 
   const breadcrumbList = [
     {name: 'Home', path: '/', active: true},
@@ -22,7 +25,7 @@ const CourseHome = ({}) => {
 
   const pageCards = [
     {title: 'Home', icon: 'Home', path: '/', space: true},
-    {title: 'New Course', icon: 'Course Plus', page: 'new', space: true}
+    {title: 'New Course', icon: 'Course Plus', page: 'new facility', space: true}
   ]
 
   const courseNames = courseList.map(item => {

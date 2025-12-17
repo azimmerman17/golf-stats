@@ -4,12 +4,13 @@ import Card from 'react-bootstrap/Card';
 
 import GetIcon from '../../Functions/GetIcon';
 
-// import { CurrentPage } from '../Contexts/CurrentPageContext'
+import { CurrentPage } from '../../Contexts/CurrentPageContext'
 
 const DisplayCards = ({ title, icon, page, path, space }) => {
-  // const { currentPage, setCurrentPage } = useContext(CurrentPage)
+  const { currentPage, setCurrentPage } = useContext(CurrentPage)
 
   const handleClick = (page, path) => {
+    console.log('click,', page)
     if (page) setCurrentPage(page)
     else location.replace(path)
   }
