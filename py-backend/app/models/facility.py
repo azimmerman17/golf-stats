@@ -77,7 +77,7 @@ class Facility(db.Model):
 
     for k in data.keys():
       keys = f'{keys}{'' if keys == '' else ', '}{k}'
-      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'"}"
+      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'" if data[k] is not None else 'null'}"
 
     query = f"""
     INSERT INTO "Facility" ({keys})
