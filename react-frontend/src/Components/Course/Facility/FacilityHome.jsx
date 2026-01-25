@@ -1,30 +1,31 @@
-import { useContext, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useContext, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Nav from 'react-bootstrap/Nav';
+import Col from 'react-bootstrap/esm/Col'
+import Button from 'react-bootstrap/esm/Button'
 
 import { CurrentPage } from '../../../Contexts/CurrentPageContext'
-import { CurrentFacility } from '../../../Contexts/CurrentFacilityContext';
+import { CurrentFacility } from '../../../Contexts/CurrentFacilityContext'
 
-import Breadcrumbs from '../../Home/BreadCrumbs';
-import FacilityHeader from './FacilityHeader';
-import FacilityHomeTab from './FacilityHomeTab';
-import FacilityContactTab from './FacilityContactTab';
-import FacilityCourseTab from './FacilityCourseTab';
-import DisplayTabs from '../../../Functions/DisplayTabs';
+import Breadcrumbs from '../../Home/BreadCrumbs'
+import FacilityHeader from './FacilityHeader'
+import FacilityHomeTab from './FacilityHomeTab'
+import FacilityContactTab from './FacilityContactTab'
+import FacilityCourseTab from './FacilityCourseTab'
+import DisplayTabs from '../../../Functions/DisplayTabs'
 
 const FacilityHome = ({}) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams()
   const { currentPage, setCurrentPage } = useContext(CurrentPage)
   const { currentFacility, setCurrentFacility } = useContext(CurrentFacility)
   const [facilityTab, setFacilityTab] = useState('Home')
+  const role = 'admin' // update to use user's role
 
   if (!currentFacility) return 'Loading...'
   const { course, facility, season } = currentFacility
   const { name } = facility
   
-  console.log(course, facility, season)
 
   const breadcrumbList = [
     {name: 'Home', path: '/', active: true},
@@ -50,17 +51,24 @@ const FacilityHome = ({}) => {
   }
   
   return (
-    <Container fluid className='p-1'>
+    <Container fluid className='p-1 mb-3'>
       <Row>
         <Breadcrumbs list={breadcrumbList} />
       </Row>
       <Row className='mb-2'>
         <FacilityHeader facility={facility} season={season} />
       </Row>
-      <Row className='border border-danger border-3 rounded shadow-lg mb-3'>
+      <Row className='border border-danger border-3 rounded shadow-lg mb-2'>
         <DisplayTabs tabs={tabs} currentTab={facilityTab} page='facility' setCurrentTab={setFacilityTab} defaultKey={'Home'} />
         {tabView(facilityTab)}
       </Row>
+      {role === 'admin' ? (
+        <Row className='mb-2'>
+          <Col className='text-end'>
+            <Button variant='warning' onClick={e => setCurrentPage('editFacility')}>Edit</Button>
+          </Col>
+        </Row>
+      ) : null}
     </Container>
   )
 }

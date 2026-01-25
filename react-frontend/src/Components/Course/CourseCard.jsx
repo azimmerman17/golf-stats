@@ -28,7 +28,7 @@ const CourseCard = ({ item }) => {
       <Container fluid className='px-0'>
         <Row className='px-0'>
           <Col xs='2' className='me-1 ms-0 p-1 text-center'>
-            <Image variant='top' src={`https://logos.bluegolf.com/${handle}/profile.png`} alt={`${name} Logo`} style={{ width: '30px'}} className='mx-0'/>
+            {handle ? <Image src={`https://logos.bluegolf.com/${handle}/profile.png`} alt={`${name} Logo`} style={{ maxWidth: '100px'}} className='m-auto'/> : null}
           </Col>
           <Col xs='9'>
             <h6>{name}</h6>

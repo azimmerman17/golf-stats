@@ -134,7 +134,7 @@ def translate_holes(tee_id, action, user, tee, conn):
       'si': hole['Allocation']
     }
 
-    hole_query = Hole(hole_dict['hole_id']).insert_row(hole_dict)
+    hole_query = Hole(None).insert_row(hole_dict)
   
     # run query
     try:
@@ -234,7 +234,7 @@ def translate_facility(facility_id, season_id, user, ghin):
   facility_query = Facility(facility_id).update_row(facility_dict)
   facility_id = ghin['Facility']['FacilityId']
 
-# check and update facility season record
+  # check and update facility season record
   season_dict = {
     'facility_id': facility_id,
     'start_date': ghin['Season']['SeasonStartDate'],
@@ -242,7 +242,7 @@ def translate_facility(facility_id, season_id, user, ghin):
     'year_round': ghin['Season']['IsAllYear']
   }
 
-# check and update facility season record
+  # check and update facility season record
   season_dict = {
     'facility_id': facility_id,
     'start_date': ghin['Season']['SeasonStartDate'],

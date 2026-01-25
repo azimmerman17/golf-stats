@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 import GetFlag from '../../../Functions/GetFlag'
 import TranslateCountryCode from '../../../Functions/TranslateCountryCode'
+import GetIcon from '../../../Functions/GetIcon'
 
 const FacilityHeader = ({facility, season}) => {
   const { handle, name, country, state, city } = facility
@@ -12,7 +13,7 @@ const FacilityHeader = ({facility, season}) => {
   return (
     <Container fluid className='border border-3 border-danger rounded p-1 shadow-lg'>
       <Row>
-        <Image src={`https://logos.bluegolf.com/${handle}/profile.png`} alt={`${name} Logo`} style={{ maxWidth: '100px'}} className='m-auto'/>
+        {handle ? <Image src={`https://logos.bluegolf.com/${handle}/profile.png`} alt={`${name} Logo`} style={{ maxWidth: '100px'}} className='m-auto'/> : null}
       </Row>
       <Row>
          <h4 className='mx-auto mb-0 text-center align-text-bottom'>{name}</h4>

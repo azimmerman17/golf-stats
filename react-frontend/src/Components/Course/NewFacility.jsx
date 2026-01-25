@@ -52,7 +52,6 @@ const NewFacility = ({}) => {
     const { color, text } = m
 
     return <Messages color={color} text={text} key={`message-${i}`}/>
-
   })
 
   const displayForm = formItems.map(item => {
@@ -98,15 +97,14 @@ const NewFacility = ({}) => {
       },
       body: JSON.stringify(newFacility)
     }
-    console.log(options)
 
-    let response = await fetch(BASE_URL + 'facility', options)
+    let response = await fetch(BASE_URL + 'facility/', options)
     const data = await response.json()
 
     if (response.status === 200) {
       setCurrentUser(data.user)
       setMessage([])
-      setCurrentPage('facilitySuccess')
+      setCurrentPage('facility')
     } else {
       setMessage({color: 'danger', text: data.message})
     }

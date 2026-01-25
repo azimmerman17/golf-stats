@@ -8,6 +8,7 @@ import CourseHome from '../Course/CourseHome'
 import FacilityHome from '../Course/Facility/FacilityHome'
 import CoursePage from '../Course/Course/CoursePage';
 import NewFacility from '../Course/NewFacility';
+import FacilityEdit from '../Course/Facility/FacilityEdit';
 
 
 const RenderPage = ({ path, setTitle }) => {
@@ -29,6 +30,8 @@ const RenderPage = ({ path, setTitle }) => {
           return <CoursePage />
         case 'new facility':
           return <NewFacility />
+        case 'editFacility':
+          return <FacilityEdit />
         default:
           if (searchParams.get('facility_id') && searchParams.get('course_id')) return <CoursePage />
           else if (searchParams.get('facility_id')) return <FacilityHome />
