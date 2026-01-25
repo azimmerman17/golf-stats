@@ -19,6 +19,7 @@ def get_facility(id=None):
     FROM "Facility" F
       LEFT JOIN "Facility_Season" S ON S.facility_id = F.facility_id
     {f'WHERE F.facility_id = {id}' if id is not None else ''}
+    ORDER BY F.name
     ;"""
     
   return query

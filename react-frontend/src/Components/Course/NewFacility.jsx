@@ -1,18 +1,21 @@
+import { useState, useContext } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+
+import { CurrentPage } from '../../Contexts/CurrentPageContext'
 
 import Breadcrumbs from '../Home/BreadCrumbs'
-import FormGroupTriage from '../Forms/FormGroupTriage';
-import { useState } from 'react';
-import CountryList from '../../Assests/CountryList';
-import StateList from '../../Assests/StateList';
-import CourseClassList from '../../Assests/CourseClassList';
-import Messages from '../Home/Messages';
+import FormGroupTriage from '../Forms/FormGroupTriage'
+import CountryList from '../../Assests/CountryList'
+import StateList from '../../Assests/StateList'
+import CourseClassList from '../../Assests/CourseClassList'
+import Messages from '../Home/Messages'
 
 const NewFacility = ({}) => {
   const BASE_URL = import.meta.env.VITE_BACKEND_URL
+  const { currentPage, setCurrentPage } = useContext(CurrentPage)
   const [validated, setValidated] = useState(false)
   const [message, setMessage] = useState([])
   const [newFacility, setNewFacility] = useState({
@@ -102,8 +105,6 @@ const NewFacility = ({}) => {
     const data = await response.json()
 
     if (response.status === 200) {
-      setCurrentUser(data.user)
-      setMessage([])
       setCurrentPage('facility')
     } else {
       setMessage({color: 'danger', text: data.message})
@@ -121,7 +122,7 @@ const NewFacility = ({}) => {
       </Row>
       <Row>
         <h5 className='text-center'>Add New Facility</h5>
-        <Form className='mb-3'   validated={validated} onSubmit={handleSubmit}>
+        <Form className='mb-3' validated={validated} onSubmit={handleSubmit}>
           {displayForm}
           <Button variant="primary" type="submit">
             Submit

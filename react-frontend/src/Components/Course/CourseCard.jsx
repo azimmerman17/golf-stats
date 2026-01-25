@@ -20,7 +20,6 @@ const CourseCard = ({ item }) => {
   const handleClick = (id) => {
     setSearchParams({ facility_id: id });
     setCurrentPage('facility')
-    console.log(currentFacility)
   }
   
   return (
@@ -32,7 +31,7 @@ const CourseCard = ({ item }) => {
           </Col>
           <Col xs='9'>
             <h6>{name}</h6>
-            <p className='mb-0 text-end text-secondary small-text'>{city}{state ? ` ${state}` : '' }, {country}</p>
+            <p className='mb-0 text-end text-secondary small-text'>{city}{state ? `, ${state}` : '' }, {country}</p>
           </Col>
         </Row>
       </Container>
