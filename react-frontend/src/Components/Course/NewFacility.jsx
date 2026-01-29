@@ -124,7 +124,7 @@ const NewFacility = ({}) => {
         <h5 className='text-center'>Add New Facility</h5>
         <Form className='mb-3' validated={validated} onSubmit={handleSubmit}>
           {displayForm}
-          <Button variant="primary" type="submit">
+          <Button variant='primary' type='submit'>
             Submit
           </Button>
         </Form>

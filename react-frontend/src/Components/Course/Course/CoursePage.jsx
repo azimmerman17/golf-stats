@@ -12,6 +12,7 @@ import CourseHeader from './CourseHeader';
 import DisplayTabs from '../../../Functions/DisplayTabs';
 import CourseTeesTab from './CourseTeesTab';
 import CourseHolesTab from './CourseHolesTab';
+import CourseHandicapTab from './CoursehandicapTab';
 
 const CoursePage = ({}) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,7 +60,7 @@ const CoursePage = ({}) => {
       case 'Tees':
         return <CourseTeesTab tees={teesSorted} currentTee={currentTee} setCurrentTee={setCurrentTee} />
       case 'Handicap':
-        return tab
+        return <CourseHandicapTab tees={teesSorted} currentTee={currentTee} setCurrentTee={setCurrentTee} />
       case 'Holes':
         return <CourseHolesTab tees={teesSorted} gps={gpsSorted} currentTee={currentTee} setCurrentTee={setCurrentTee} />
     }

@@ -25,8 +25,8 @@ const NewCourse = ({}) => {
     established: new Date().getFullYear(),
     architect: null,
     hole_count: 18,
-    GHIN: "",
-    gps_data:""
+    GHIN: '',
+    gps_data:''
   })
 
   if (!currentFacility) return 'Loading...'
@@ -123,7 +123,7 @@ const NewCourse = ({}) => {
         <h5 className='text-center'>Add New Course</h5>
         <Form className='mb-3' validated={validated} onSubmit={handleSubmit}>
           {displayForm}
-          <Button variant="primary" type="submit">
+          <Button variant='primary' type='submit'>
             Submit
           </Button>
         </Form>
