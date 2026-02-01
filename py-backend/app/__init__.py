@@ -7,6 +7,9 @@ from app.extensions import db, cors
 # FACILITY MODELS
 from app.models import facility, course, tee, course_rating, hole, hole_geo, facility_season
 
+# PERSON MODELS
+from app.models import person
+
 from config import Config
  
 def create_app(config_class=Config):
@@ -27,9 +30,11 @@ def create_app(config_class=Config):
   Migrate(app, hole.db)
   Migrate(app, hole_geo.db) 
   Migrate(app, facility_season.db) 
+  Migrate(app, facility_season.db) 
+  Migrate(app, person.db)
 
   # Register Blueprints
-  #FACILITY BLUEPRINTS
+  # FACILITY BLUEPRINTS
   from app.facility import bp as facility_bp
   app.register_blueprint(facility_bp)
   from app.course import bp as course_bp
@@ -42,6 +47,11 @@ def create_app(config_class=Config):
   app.register_blueprint(course_rating_bp)
   from app.hole_geo import bp as hole_geo_bp
   app.register_blueprint(hole_geo_bp)
+
+  # PERSON BLUEPRINTS
+  from app.person import bp as person_bp
+  app.register_blueprint(person_bp)
+
   @app.route('/')
   def hello_world():
       return '<p>Hello, World!</p>'
