@@ -26,10 +26,11 @@ class Person(db.Model):
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
-  def __init__(self, person_id=None, last_name=None, first_name=None, email=None, dob=None, height=None, weight=None, nation=None, home_facility=None, player_type=None, gender=None, handedness=None, units_distance=None, units_speed=None, units_temp=None, units_weight=None, units_alt=None, created_at=None, updated_at=None):
+  def __init__(self, person_id=None, last_name=None, first_name=None, username=None, email=None, dob=None, height=None, weight=None, nation=None, home_facility=None, player_type=None, gender=None, handedness=None, units_distance=None, units_speed=None, units_temp=None, units_weight=None, units_alt=None, created_at=None, updated_at=None):
     self.person_id = person_id
     self.last_name = last_name
     self.first_name = first_name
+    self.username = username
     self.email = email
     self.dob = dob
     self.height = height
@@ -75,7 +76,8 @@ class Person(db.Model):
       query = f"{query}, {key}='{update_dict[key]}'"
     
     query = f"""{query}
-    WHERE person_id = {self.person_id}
+    WHERE {f"person_id = {self.person_id}" if self.person_id is not None else ""}
+          {f"username = '{self.username}'" if self.username is not None else ""}
     ;"""
 
     return  query
@@ -83,7 +85,8 @@ class Person(db.Model):
   def delete_row(self):
     query = f"""
     DELETE FROM "Person" 
-    WHERE person_id = {self.person_id}
+    WHERE {f"person_id = {self.person_id}" if self.person_id is not None else ""}
+          {f"username = '{self.username}'" if self.username is not None else ""}
     ;"""
 
     return query
