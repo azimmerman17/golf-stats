@@ -10,6 +10,7 @@ import CoursePage from '../Course/Course/CoursePage';
 import NewFacility from '../Course/NewFacility';
 import FacilityEdit from '../Course/Facility/FacilityEdit';
 import NewCourse from '../Course/Course/NewCourse';
+import PersonHome from '../Person/PersonHome';
 
 
 const RenderPage = ({ path, setTitle }) => {
@@ -47,7 +48,7 @@ const RenderPage = ({ path, setTitle }) => {
     case 'profile':
        switch (currentPage) {
         default:
-          return path
+          return <PersonHome />
       }
 
     
