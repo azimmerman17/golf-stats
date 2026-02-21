@@ -37,6 +37,7 @@ def upgrade():
     sa.Column('units_temp', sa.Enum('F', 'C', name='person_units_temp'), server_default='F', nullable=False),
     sa.Column('units_weight', sa.Enum('LB', 'KG', 'ST', name='person_units_weight'), server_default='LB', nullable=False),
     sa.Column('units_alt', sa.Enum('FT', 'M', name='person_units_alt'), server_default='FT', nullable=False),
+    sa.Column('units_height', sa.Enum('FT', 'CM', name='person_units_height'), nullable=False, server_default='FT'),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['home_facility'], ['Facility.facility_id'], onupdate='CASCADE', ondelete='SET NULL'),

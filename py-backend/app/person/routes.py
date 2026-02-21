@@ -91,7 +91,7 @@ def person_id(id, config_class=Config):
       print('ERROR: ', error)
       return {'msg': 'Error retrieving person list'}, 500
 
-    return [Person(person_id=p['person_id'], last_name=p['last_name'], first_name=p['first_name'], username=p['username'], email=p['email'], dob=p['dob'], height=p['height'], weight=p['weight'], nation=p['nation'], home_facility=p['home_facility'], player_type=p['player_type'], gender=p['gender'], handedness=p['handedness'], units_distance=p['units_distance'], units_speed=p['units_speed'], units_temp=p['units_temp'], units_weight=p['units_weight'], units_alt=p['units_alt']).as_dict() for p in res]
+    return [Person(person_id=p['person_id'], last_name=p['last_name'], first_name=p['first_name'], username=p['username'], email=p['email'], dob=p['dob'], height=p['height'], weight=p['weight'], nation=p['nation'], home_facility=p['home_facility'], player_type=p['player_type'], gender=p['gender'], handedness=p['handedness'], units_distance=p['units_distance'], units_speed=p['units_speed'], units_temp=p['units_temp'], units_weight=p['units_weight'], units_alt=p['units_alt'], units_height=p['units_height']).as_dict() for p in res]
   # UPDATE PERSON
   elif request.method == 'PUT':
   # check if payload is valid
@@ -158,7 +158,7 @@ def person_username(username, config_class=Config):
       print('ERROR: ', error)
       return {'msg': 'Error retrieving person list'}, 500
 
-    return [Person(person_id=p['person_id'], last_name=p['last_name'], first_name=p['first_name'], username=p['username'], email=p['email'], dob=p['dob'], height=p['height'], weight=p['weight'], nation=p['nation'], home_facility=p['home_facility'], player_type=p['player_type'], gender=p['gender'], handedness=p['handedness'], units_distance=p['units_distance'], units_speed=p['units_speed'], units_temp=p['units_temp'], units_weight=p['units_weight'], units_alt=p['units_alt']).as_dict() for p in res]
+    return [Person(person_id=p['person_id'], last_name=p['last_name'], first_name=p['first_name'], username=p['username'], email=p['email'], dob=p['dob'], height=p['height'], weight=p['weight'], nation=p['nation'], home_facility=p['home_facility'], player_type=p['player_type'], gender=p['gender'], handedness=p['handedness'], units_distance=p['units_distance'], units_speed=p['units_speed'], units_temp=p['units_temp'], units_weight=p['units_weight'], units_alt=p['units_alt'], units_height=p['units_height']).as_dict() for p in res]
   # UPDATE PERSON
   elif request.method == 'PUT':
   # check if payload is valid

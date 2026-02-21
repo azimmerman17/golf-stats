@@ -23,10 +23,11 @@ class Person(db.Model):
   units_temp = db.Column(db.Enum('F', 'C', name='person_units_temp'), nullable=False, server_default='F')
   units_weight = db.Column(db.Enum('LB', 'KG', 'ST', name='person_units_weight'), nullable=False, server_default='LB')
   units_alt = db.Column(db.Enum('FT', 'M', name='person_units_alt'), nullable=False, server_default='FT')
+  units_height = db.Column(db.Enum('FT', 'CM', name='person_units_height'), nullable=False, server_default='FT')
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
-  def __init__(self, person_id=None, last_name=None, first_name=None, username=None, email=None, dob=None, height=None, weight=None, nation=None, home_facility=None, player_type=None, gender=None, handedness=None, units_distance=None, units_speed=None, units_temp=None, units_weight=None, units_alt=None, created_at=None, updated_at=None):
+  def __init__(self, person_id=None, last_name=None, first_name=None, username=None, email=None, dob=None, height=None, weight=None, nation=None, home_facility=None, player_type=None, gender=None, handedness=None, units_distance=None, units_speed=None, units_temp=None, units_weight=None, units_alt=None, units_height=None, created_at=None, updated_at=None):
     self.person_id = person_id
     self.last_name = last_name
     self.first_name = first_name
@@ -45,6 +46,7 @@ class Person(db.Model):
     self.units_temp = units_temp
     self.units_weight = units_weight
     self.units_alt = units_alt
+    self.units_height = units_height
     self.created_at = created_at
     self.updated_at = updated_at
 

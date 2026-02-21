@@ -20,14 +20,14 @@ const PersonHeader = ({person}) => {
         <h4 className='mx-auto mb-0 text-center align-text-bottom'>{first_name} {last_name}</h4>
         <p className=' text-center text-secondary small-text'>{username}</p>
       </Row>
-      <Row> 
+      {/* <Row> 
         <Col className='text-start'>
           <p className='p-1 mb-0'>{GetPlayerType(player_type)}</p>
         </Col>
         <Col className='text-end'>
           <div className='p-1 mb-0'>{GetFlag(TranslateCountryCode(nation, 'map'), 40)}</div>
         </Col>
-      </Row>
+      </Row> */}
     </Container>    
 
   )
