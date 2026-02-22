@@ -1,6 +1,9 @@
+import { useContext } from 'react'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+
+import { HomeCourse } from '../../Contexts/HomeCourseContext'
 
 import InfoDisplay from '../../Functions/InfoDisplay'
 import GetGender from '../../Functions/GetGender'
@@ -13,7 +16,13 @@ import TranslateCountryCode from '../../Functions/TranslateCountryCode'
 
 
 const PersonBio = ({ person }) => {
+  const {homeCourse, setHomeCourse} = useContext(HomeCourse)
   const {dob, email, gender, handedness, height, home_facility, nation, player_type, weight, units_height, units_weight} = person
+
+  if (!homeCourse) setHomeCourse(home_facility)
+  if (!homeCourse.course) return 'Loading...'
+  const { name } = homeCourse.facility
+
 
   const dataList = [
     {data: FormatDate(dob, true, 'long', false), label: 'DATE OF BIRTH'},
@@ -24,7 +33,7 @@ const PersonBio = ({ person }) => {
     {data: `${ConvertWeight(weight, 'LB', units_weight)} ${units_weight.toLowerCase()}`, label: 'WEIGHT'},
     {data: GetFlag(TranslateCountryCode(nation, 'map'), 40), label: 'COUNTRY'},
     {data: GetPlayerType(player_type), label:'PLAYER TYPE'},
-    {data: home_facility, label:'HOME COURSE'}
+    {data: name, label:'HOME COURSE'}
 
   ]
 
