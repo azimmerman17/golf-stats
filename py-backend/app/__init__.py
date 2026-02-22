@@ -10,6 +10,10 @@ from app.models import facility, course, tee, course_rating, hole, hole_geo, fac
 # PERSON MODELS
 from app.models import person
 
+# EQUIPMENT MODELS
+from app.models import equipment
+
+
 from config import Config
  
 def create_app(config_class=Config):
@@ -32,6 +36,7 @@ def create_app(config_class=Config):
   Migrate(app, facility_season.db) 
   Migrate(app, facility_season.db) 
   Migrate(app, person.db)
+  Migrate(app, equipment.db)
 
   # Register Blueprints
   # FACILITY BLUEPRINTS
