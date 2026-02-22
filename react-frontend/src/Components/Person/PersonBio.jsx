@@ -34,7 +34,6 @@ const PersonBio = ({ person }) => {
     {data: GetFlag(TranslateCountryCode(nation, 'map'), 40), label: 'COUNTRY'},
     {data: GetPlayerType(player_type), label:'PLAYER TYPE'},
     {data: name, label:'HOME COURSE'}
-
   ]
 
   const display = dataList.map(item => {

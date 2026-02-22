@@ -9,6 +9,7 @@ import Breadcrumbs from '../Home/BreadCrumbs'
 import PersonHeader from './PersonHeader'
 import DisplayTabs from '../../Functions/DisplayTabs'
 import PersonBio from './PersonBio'
+import PersonSettings from './PersonSettings'
 
 const PersonHome = ({}) => {
   const {currentUser, setCurrentUser} = useContext(CurrentUser)
@@ -44,7 +45,7 @@ const PersonHome = ({}) => {
       case 'Bio':
         return <PersonBio person={person} />
       case 'User Settings':
-        return 'User Settings'
+        return <PersonSettings person={person} />
       case 'Handicap':
         return 'Handicap'
       case 'Equipment':
