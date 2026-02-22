@@ -7,6 +7,7 @@ from app.models.person import Person
 class Equipment(db.Model):
   equipment_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
   person_id = db.Column(db.Integer, db.ForeignKey(Person.person_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+  ss_id = db.Column(db.Integer)
   catagory = db.Column(db.Enum('Driver', 'Wood', 'Hybrid', 'Iron', 'Wedge', 'Putter', name='equipment_type'), nullable=False)
   name = db.Column(db.String(25), nullable=False)
   short_name = db.Column(db.String(3), nullable=False)
@@ -17,9 +18,10 @@ class Equipment(db.Model):
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
-  def __init__(self, equipment_id=None, person_id=None, catagory=None, name=None, short_name=None, make=None, model=None, year=None, active=None, created_at=None, updated_at=None):
+  def __init__(self, equipment_id=None, person_id=None, ss_id=None, catagory=None, name=None, short_name=None, make=None, model=None, year=None, active=None, created_at=None, updated_at=None):
     self.equipment_id = equipment_id
     self.person_id = person_id
+    self.ss_id = ss_id
     self.catagory = catagory
     self.name = name
     self.short_name = short_name
@@ -65,7 +67,7 @@ class Equipment(db.Model):
 
   def delete_row(self):
     query = f"""
-    DELETE FROM " b" 
+    DELETE FROM "Equipment" 
     WHERE {f"equipment_id = {self.equipment_id}" if self.equipment_id is not None else ""}
     ;"""
 

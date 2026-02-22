@@ -20,6 +20,7 @@ def upgrade():
     op.create_table('Equipment',
     sa.Column('equipment_id', sa.Integer(), nullable=False),
     sa.Column('person_id', sa.Integer(), nullable=False),
+    sa.Column('ss_id', sa.Integer()),
     sa.Column('catagory', sa.Enum('Driver', 'Wood', 'Hybrid', 'Iron', 'Wedge', 'Putter', name='equipment_type'), nullable=False),
     sa.Column('name', sa.String(length=25), nullable=False),
     sa.Column('short_name', sa.String(length=3), nullable=False),
