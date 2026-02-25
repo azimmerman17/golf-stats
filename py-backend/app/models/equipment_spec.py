@@ -9,11 +9,11 @@ class Equipment_Spec(db.Model):
   equipment_id = db.Column(db.Integer, db.ForeignKey(Equipment.equipment_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
   loft = db.Column(db.FLOAT)
   lie = db.Column(db.FLOAT)
-  length = db.Column(db.FLOAT)
+  club_length = db.Column(db.FLOAT)
   wieght = db.Column(db.FLOAT)
   club_head = db.Column(db.String(50))
   head_weight = db.Column(db.FLOAT)
-  offset = db.Column(db.FLOAT)
+  club_offset = db.Column(db.FLOAT)
   bounce = db.Column(db.FLOAT)
   swing_weight = db.Column(db.String(2))
   shaft = db.Column(db.String(50))
@@ -26,16 +26,16 @@ class Equipment_Spec(db.Model):
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
-  def __init__(self, equipment_spec_id=None, equipment_id=None, loft=None, lie=None, length=None, wieght=None, club_head=None, head_weight=None, offset=None, bounce=None, swing_weight=None, shaft=None, shaft_flex=None, shaft_weight=None, grip=None, grip_core_dia=None, grip_weight=None, grip_size=None, created_at=None, updated_at=None):
+  def __init__(self, equipment_spec_id=None, equipment_id=None, loft=None, lie=None, club_length=None, wieght=None, club_head=None, head_weight=None, club_offset=None, bounce=None, swing_weight=None, shaft=None, shaft_flex=None, shaft_weight=None, grip=None, grip_core_dia=None, grip_weight=None, grip_size=None, created_at=None, updated_at=None):
     self.equipment_spec_id = equipment_spec_id
     self.equipment_id = equipment_id
     self.loft = loft
     self.lie = lie
-    self.length = length
+    self.club_length = club_length
     self.wieght = wieght
     self.club_head = club_head
     self.head_weight = head_weight
-    self.offset = offset
+    self.club_offset = club_offset
     self.bounce = bounce
     self.swing_weight = swing_weight
     self.shaft = shaft
@@ -53,15 +53,15 @@ class Equipment_Spec(db.Model):
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
 
   def insert_row(self, data):
-    keys=''
-    values=''
+    keys = 'equipment_id'
+    values = self.equipment_id
 
     for k in data.keys():
-      keys = f'{keys}{'' if keys == '' else ', '}{k}'
-      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'" if data[k] is not None else 'null'}"
+      keys = f'{keys}, {k}'
+      values =  f"{values}, {f"'{data[k]}'" if data[k] is not None else 'null'}"
 
     query = f"""
-    INSERT INTO "Equipment_Specs" ({keys})
+    INSERT INTO "Equipment_Spec" ({keys})
     VALUES ({values})
     ;"""
 

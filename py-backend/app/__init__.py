@@ -59,6 +59,10 @@ def create_app(config_class=Config):
   from app.person import bp as person_bp
   app.register_blueprint(person_bp)
 
+  # EQUIPMENT BLUEPRINTS
+  from app.equipment import bp as equipment_bp
+  app.register_blueprint(equipment_bp)
+
   @app.route('/')
   def hello_world():
       return '<p>Hello, World!</p>'

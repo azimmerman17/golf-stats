@@ -37,16 +37,17 @@ class Equipment(db.Model):
     return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
 
   def insert_row(self, data):
-    keys=''
-    values=''
+    keys = 'person_id'
+    values = self.person_id
 
     for k in data.keys():
-      keys = f'{keys}{'' if keys == '' else ', '}{k}'
-      values =  f"{values}{'' if values == '' else ', '}{f"'{data[k]}'" if data[k] is not None else 'null'}"
+      keys = f'{keys}, {k}'
+      values =  f"{values}, {f"'{data[k]}'" if data[k] is not None else 'null'}"
 
     query = f"""
     INSERT INTO "Equipment" ({keys})
     VALUES ({values})
+    RETURNING equipment_id
     ;"""
 
     return query
