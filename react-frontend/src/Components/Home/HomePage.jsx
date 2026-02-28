@@ -25,15 +25,12 @@ const HomePage = ({}) => {
     <Container fluid>
       <Breadcrumbs list={breadcrumbList}></Breadcrumbs>
       <Row className='my-1 mx-auto'>
-        Profile
-      </Row>
-      <Row className='my-1 mx-auto'>
-        <Col className='p-2'>
+        {/* <Col className='p-2'>
           Home Course
         </Col>
         <Col className='p-2'> 
           Handicap Card
-        </Col>
+        </Col> */}
       </Row>
       <Row className='my-1 mx-auto'>
         {navCards}   

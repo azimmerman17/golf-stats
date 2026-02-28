@@ -10,7 +10,6 @@ const DisplayCards = ({ title, icon, page, path, space }) => {
   const { currentPage, setCurrentPage } = useContext(CurrentPage)
 
   const handleClick = (page, path) => {
-    console.log('click,', page)
     if (page) setCurrentPage(page)
     else location.replace(path)
   }

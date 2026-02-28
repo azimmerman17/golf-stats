@@ -4,15 +4,20 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import { CurrentUser } from '../../Contexts/CurrentUserContext'
+import { EquipmentContext } from '../../Contexts/EquipmentContext' 
+
 
 import Breadcrumbs from '../Home/BreadCrumbs'
 import PersonHeader from './PersonHeader'
 import DisplayTabs from '../../Functions/DisplayTabs'
 import PersonBio from './PersonBio'
 import PersonSettings from './PersonSettings'
+import PersonEquipment from '../Equipment/PersonEquipment'
 
 const PersonHome = ({}) => {
   const {currentUser, setCurrentUser} = useContext(CurrentUser)
+  const {equipmentContext, setEquipmentContext} = useContext(EquipmentContext)
+
   const [currentTab, setCurrentTab] = useState('Bio')
 
   if (!currentUser.length) return 'Loading...'
@@ -49,7 +54,7 @@ const PersonHome = ({}) => {
       case 'Handicap':
         return 'Handicap'
       case 'Equipment':
-        return 'Equipment'
+        return <PersonEquipment equipment={equipmentContext} />
       case 'Rounds':
         return 'Rounds'
       case 'Stats':
