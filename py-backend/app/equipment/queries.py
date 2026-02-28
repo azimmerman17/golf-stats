@@ -1,5 +1,5 @@
 # GET EQUIPMENT QUERIES
-def get_equipment(id, schema):
+def get_equipment(id, schema=None):
   query = f"""
   Select * FROM "Equipment" E
   WHERE {'E.person_id' if schema == 'user' else 'E.equipment_id'} = {id}
@@ -18,7 +18,8 @@ def get_equipment(id, schema):
       WHEN E.name LIKE 'S%' THEN '3'
       WHEN E.name LIKE 'L%' THEN '4'
       ELSE E.name
-    END);
+    END),
+    E.year desc;
   """
 
   subquery = f"""
@@ -35,7 +36,8 @@ def get_equipment(id, schema):
   Select ED.* FROM "Equipment_Distance" ED
   WHERE ED.equipment_id IN ({subquery});
   """
-
+  if schema == 'check':
+    return query
   return (query, spec_query, dist_query)
 
 def check_user(id): 

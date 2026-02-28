@@ -69,11 +69,11 @@ class Equipment_Spec(db.Model):
 
   def update_row(self, update_dict):
     query = """
-    UPDATE "Equipment_Specs"
+    UPDATE "Equipment_Spec"
     SET updated_at = NOW()"""
 
     for key in update_dict.keys():
-      query = f"{query}, {key}='{update_dict[key]}'"
+      query = f"{query}, {key}={f"'{update_dict[key]}'" if update_dict[key] is not None else 'null'}"
     
     query = f"""{query}
     WHERE {f"equipment_id = {self.equipment_id}" if self.equipment_id is not None else ""}
@@ -81,10 +81,15 @@ class Equipment_Spec(db.Model):
 
     return  query
 
-  def delete_row(self):
+  def delete_row(self, person_id=None):
+    person_subquery = f"""
+      SELECT E.equipment_id FROM "Equipment" E
+      WHERE E.person_id = {person_id}
+    """
+
     query = f"""
-    DELETE FROM "Equipment_Specs" 
-    WHERE {f"equipment_id = {self.equipment_id}" if self.equipment_id is not None else ""}
+    DELETE FROM "Equipment_Spec" 
+    WHERE {f"equipment_id = {self.equipment_id}" if self.equipment_id is not None else person_subquery}
     ;"""
 
     return query
