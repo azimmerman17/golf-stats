@@ -25,8 +25,6 @@ const PersonHome = ({}) => {
   // filter on the username in the env
   const person = currentUser.filter(p => p.username === import.meta.env.VITE_USERNAME)[0]
 
-  console.log(person)
-
   const breadcrumbList = [
     {name: 'Home', path: '/', active: true},
     {name: 'Profile', path: '/profile', active: false},

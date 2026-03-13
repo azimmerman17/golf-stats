@@ -15,9 +15,6 @@ const HomeCourseProvider = ({ children }) => {
       setHomeCourse(facility)
     }
 
-    console.log(typeof homeCourse)
-    console.log(homeCourse)
-
     if (typeof homeCourse === 'number') getCourseFacility(homeCourse)
   }, [homeCourse])
 

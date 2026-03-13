@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import Container from 'react-bootstrap/Container'
-import Accordion from 'react-bootstrap/Accordion';
+import Accordion from 'react-bootstrap/Accordion'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Button from 'react-bootstrap/Button'
 
 import InfoDisplay from '../../Functions/InfoDisplay'
+import EquipmentUpdate from './EquipmentUpdate'
 
 const EquipmentDetails = ({ item }) => {
   const [edit, setEdit] = useState(false)
 
-  if (edit) return 'EDIT'
-
   const { club, spec, distance } = item
+  const { ss_id } = club
   const { active, make, model, name  } = club
 
   let clubKeys = ['catagory', 'short_name', 'ss_id', 'year']
@@ -76,7 +77,7 @@ const EquipmentDetails = ({ item }) => {
     return (
       <>
         {club[key] ? (
-          <Col key={`equipment-club-${key}`}>
+          <Col key={`equipment-club-${ss_id}-${key}`}>
               <InfoDisplay data={club[key]} label={label} />
           </Col>
         ) : null }
@@ -89,7 +90,7 @@ const EquipmentDetails = ({ item }) => {
     return (
       <>
         {spec[key] ? (
-          <Col xs={6}  md={3} key={`equipment-spec-${key}`}>
+          <Col xs={6}  md={3} key={`equipment-spec-${ss_id}-${key}`}>
               <InfoDisplay data={`${spec[key]}${getUnit(key)}`} label={label} />
           </Col>
         ) : null }
@@ -105,7 +106,7 @@ const EquipmentDetails = ({ item }) => {
     return (
       <>
         {distance[key] ? (
-          <Col key={`equipment-mDistance-${key}`}>
+          <Col key={`equipment-mDistance-${ss_id}-${key}`}>
               <InfoDisplay data={`${value}${key === 'manual_dispersion' ? '%' : 'yds'}`} label={label} />
           </Col>
         ) : null }
@@ -121,7 +122,7 @@ const EquipmentDetails = ({ item }) => {
     return (
       <>
         {distance[key] ? (
-          <Col key={`equipment-cDistance-${key}`}>
+          <Col key={`equipment-cDistance-${ss_id}-${key}`}>
               <InfoDisplay data={`${value}${key === 'calc_dispersion' ? '%' : 'yds'}`} label={label} />
           </Col>
         ) : null }
@@ -129,8 +130,6 @@ const EquipmentDetails = ({ item }) => {
     )
   })
 
-
-  console.log(item)
   return (
     <Container fluid> 
       <Row className='p-2 mb-0'>
@@ -141,66 +140,50 @@ const EquipmentDetails = ({ item }) => {
           <h5 className='mb-0'>{make} {model}</h5>
         </Col>
         <Col>
-          <p className='text-end mb-0'>EDIT CLUB</p>
+          <Button className='text-end mb-0' onClick={e => setEdit(!edit)} variant={edit ? 'danger' : 'primary'}>
+            {!edit ? 'EDIT CLUB' : 'CANCEL'}
+          </Button>
         </Col>
       </Row>
-      <Accordion defaultActiveKey='0'>
-        <Accordion.Item eventKey='0'>
-          <Accordion.Header className='text-end'>Club Information</Accordion.Header>
-          <Accordion.Body>
-            <Row>
-              {clubData}
-            </Row>
-          </Accordion.Body>
-        </Accordion.Item>
-        <Accordion.Item eventKey='1'>
-          <Accordion.Header className='text-end'>Club Specs Information</Accordion.Header>
-          <Accordion.Body>
-            <Row>
-              {specData}
-            </Row>
-          </Accordion.Body>
-        </Accordion.Item>
-        <Accordion.Item eventKey='2'>
-          <Accordion.Header className='text-end'>Manual Club Distance Information</Accordion.Header>
-          <Accordion.Body>
-            <Row>
-              {mDistanceData}
-            </Row>
-          </Accordion.Body>
-        </Accordion.Item>
-        <Accordion.Item eventKey='3'>
-          <Accordion.Header className='text-end'>Calculated Club Distance Information</Accordion.Header>
-          <Accordion.Body>
-            <Row>
-              {cDistanceData}
-            </Row>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-      
-      {/* <hr />
-      <Row>
-        <h6 className='text-end'>Club Information</h6>
-        {clubData}
-      </Row>
-      <hr/>
-      <Row>
-        <h6 className='text-end'>Club Specs Information</h6>
-        {specData}
-      </Row>
-      <hr />
-      <Row>
-        <h6 className='text-end'>Manual Club Distance Information</h6>
-        {mDistanceData}
-      </Row>
-      <hr />
-      <Row>
-        <h6 className='text-end'>Calculated Club Distance Information</h6>
-        {cDistanceData}
-      </Row>
-      <hr />*/}
-      <small className='text-center'>Data Fields with no value assigned intentionally omitted</small> 
+      {!edit ? (
+        <>
+          <Accordion defaultActiveKey='0'>
+            <Accordion.Item eventKey='0'>
+              <Accordion.Header className='text-end'>Club Information</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  {clubData}
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey='1'>
+              <Accordion.Header className='text-end'>Club Specs Information</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  {specData}
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey='2'>
+              <Accordion.Header className='text-end'>Manual Club Distance Information</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  {mDistanceData}
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey='3'>
+              <Accordion.Header className='text-end'>Calculated Club Distance Information</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  {cDistanceData}
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+          <small className='text-center'>Data Fields with no value assigned intentionally omitted</small> 
+        </>
+      ) : <EquipmentUpdate item={item} setEdit={setEdit} getLabel={getLabel} getUnit={getUnit} />}
     </Container>
   )
 }

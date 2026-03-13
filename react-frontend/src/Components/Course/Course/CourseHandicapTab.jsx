@@ -31,11 +31,7 @@ const CourseHandicapTab = ({tees, currentTee, setCurrentTee}) => {
 
   // filter by the correct hole count
   rating = rating.filter(r =>r.hole_count == hole_count)[0]
-  console.log(rating)
 
-
-
-  console.log(tees, currentTee)
   return (
      <Container fluid>
       <Row className='my-1 text-center'>

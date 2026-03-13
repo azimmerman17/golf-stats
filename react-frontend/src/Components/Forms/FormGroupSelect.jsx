@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 
-const FormGroupSelect = ({ formData, formObj, setFormObj, disabled, hide, control }) => {
+const FormGroupSelect = ({ formData, formObj, setFormObj, disabled, hide, control, labelAfter }) => {
   const { name, placeholder, required, type, field, formText, list } = formData
   
   const selectOptions = list.map(item => {
@@ -18,7 +18,7 @@ const FormGroupSelect = ({ formData, formObj, setFormObj, disabled, hide, contro
       onChange={e => setFormObj({...formObj, [field]:e.target.value })}
       disabled={disabled}
     >
-      <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label>
+        {labelAfter ? null : <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label>}
         <Form.Select aria-label={`Select ${name}`}>
               {selectOptions}
         </Form.Select>
@@ -27,6 +27,7 @@ const FormGroupSelect = ({ formData, formObj, setFormObj, disabled, hide, contro
             {formText}
           </Form.Text>
         ) : null}
+        {labelAfter ? <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label> : null}
     </Form.Group>
   )
 }

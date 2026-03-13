@@ -8,7 +8,6 @@ import EquipmentItem from './EquipmentItem'
 const PersonEquipment =({ equipment }) => {
   let activeEquipment = equipment.filter(e => e.club.active == true)
   let inactiveEquipment = equipment.filter(e => e.club.active == false)
-  console.log(activeEquipment)
 
   const activeList = activeEquipment.map(item => {
     const { equipment_id } = item.club

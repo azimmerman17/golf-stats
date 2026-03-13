@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 
-const FormGroupText = ({ formData, formObj, setFormObj, disabled, control, validated }) => {
+const FormGroupText = ({ formData, formObj, setFormObj, disabled, control, validated, labelAfter }) => {
   const { name, placeholder, required, type, field, formText, validationText } = formData
 
   return (
@@ -13,16 +13,17 @@ const FormGroupText = ({ formData, formObj, setFormObj, disabled, control, valid
       disabled={disabled}
       required={required}
     >
-      <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label>
+        {labelAfter ? null : <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label>}
         <Form.Control type={type} placeholder={placeholder} />
         {formText ? (
           <Form.Text className='text-muted'>
             {formText}
           </Form.Text>
         ) : null}
-          <Form.Control.Feedback type='invalid'>
-            {validationText}
-          </Form.Control.Feedback>
+        {labelAfter ? <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label> : null}
+        <Form.Control.Feedback type='invalid'>
+          {validationText}
+        </Form.Control.Feedback>
       </Form.Group>
   )
 }

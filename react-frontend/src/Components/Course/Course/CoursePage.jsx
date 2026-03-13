@@ -12,7 +12,7 @@ import CourseHeader from './CourseHeader';
 import DisplayTabs from '../../../Functions/DisplayTabs';
 import CourseTeesTab from './CourseTeesTab';
 import CourseHolesTab from './CourseHolesTab';
-import CourseHandicapTab from './CoursehandicapTab';
+import CourseHandicapTab from './CourseHandicapTab';
 
 const CoursePage = ({}) => {
   const [searchParams, setSearchParams] = useSearchParams();

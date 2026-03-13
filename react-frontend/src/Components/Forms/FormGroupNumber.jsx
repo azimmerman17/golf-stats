@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 
-const FormGroupNumber = ({ formData, formObj, setFormObj, disabled, control }) => {
+const FormGroupNumber = ({ formData, formObj, setFormObj, disabled, control, labelAfter }) => {
   const { name, placeholder, required, type, field, formText, min, max } = formData
 
   return (
@@ -14,14 +14,15 @@ const FormGroupNumber = ({ formData, formObj, setFormObj, disabled, control }) =
       min={min}
       max={max}
     >
-      <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label>
-        <Form.Control type={type} placeholder={placeholder} />
-        {formText ? (
-          <Form.Text className='text-muted'>
-            {formText}
-          </Form.Text>
-        ) : null}
-      </Form.Group>
+      {labelAfter ? null : <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label>}
+      <Form.Control type={type} placeholder={placeholder} />
+      {formText ? (
+        <Form.Text className='text-muted'>
+          {formText}
+        </Form.Text>
+      ) : null}
+      {labelAfter ? <Form.Label>{name}{required ? <sup className='text-danger'>*</sup> : null}</Form.Label> : null}
+    </Form.Group>
   )
 }
 
