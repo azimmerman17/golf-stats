@@ -8,15 +8,16 @@ import Col from 'react-bootstrap/Col'
 import FormGroupTriage from '../Forms/FormGroupTriage';
 import EquipmentCatagoryList from '../../Assests/EquipmentCatagoryList';
 
-const EquipmentUpdate = ({ item, setEdit, getLabel, getUnit}) => { 
-  console.log(item)
-  const { club, distance, spec } = item
-  const { ss_id } = club
+const EquipmentUpdate = ({ equip, setEquip, setEdit, getLabel, getUnit}) => { 
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+  const { club, distance, spec } = equip
+  const { ss_id, equipment_id } = club
 
   const [equipmentClub, setEquipmentClub] = useState(club)
   const [equipmentSpec, setEquipmentSpec] = useState(spec)
   const [equipmentDistance, setEquipmentDistance] = useState(distance)
-      // {name: 'Name', type: 'text', placeholder: 'Facility Name', required: true, formText: null, validationText: 'Please enter a name for the facility', field: 'name'},
+  const [message, setMessage] = useState([])
 
   let clubKeys = [
     {field: 'make', type: 'text', },
@@ -60,13 +61,13 @@ const EquipmentUpdate = ({ item, setEdit, getLabel, getUnit}) => {
     key.placeholder = club[field]
     key.name = getLabel(field)
 
-    return <FormGroupTriage formData={key} formObj={equipmentDistance} control='editClub' setFormObj={setEquipmentDistance} labelAfter={true} key={`equipment-spec-${ss_id}-${field}`}/>
+    return <FormGroupTriage formData={key} formObj={equipmentClub} control='editClub' setFormObj={setEquipmentClub} labelAfter={true} key={`equipment-spec-${ss_id}-${field}`}/>
   })
 
   const specData = specKeys.map(key => {
     const { field } = key
     key.placeholder = spec[field]
-    key.name = getLabel(field)
+    key.name = `${getLabel(field)} ${getUnit(field) !== '' ? ` (${getUnit(field)})` : ''}`
 
     return <FormGroupTriage formData={key} formObj={equipmentSpec} control='editClub' setFormObj={setEquipmentSpec} labelAfter={true} key={`equipment-club-${ss_id}-${field}`}/>
   })
@@ -76,12 +77,47 @@ const EquipmentUpdate = ({ item, setEdit, getLabel, getUnit}) => {
     key.placeholder = distance[field]
     key.name = getLabel(field)
 
-    return <FormGroupTriage formData={key} formObj={equipmentSpec} control='editClub' setFormObj={setEquipmentSpec} labelAfter={true} key={`equipment-club-${ss_id}-${field}`}/>
+    return <FormGroupTriage formData={key} formObj={equipmentDistance} control='editClub' setFormObj={setEquipmentDistance} labelAfter={true} key={`equipment-club-${ss_id}-${field}`}/>
   })
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const form = e.currentTarget
+    if (form.checkValidity() === false) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    const formData = {
+      club: equipmentClub,
+      spec: equipmentSpec,
+      distance: equipmentDistance
+    }
+
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'mode': 'cors',
+      },
+      body: JSON.stringify(formData)
+    }
+
+    let response = await fetch(BASE_URL + `equipment/${equipment_id}`, options)
+    const data = await response.json()
+
+    if (response.status === 200) {
+      setEquip(formData)
+      setEdit(false)
+    } else {
+      setMessage({color: 'danger', text: data.message})
+    }
+
+  }
   
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Accordion defaultActiveKey='0'>
         <Accordion.Item eventKey='0'>
           <Accordion.Header className='text-end'>Club Information</Accordion.Header>
@@ -108,7 +144,7 @@ const EquipmentUpdate = ({ item, setEdit, getLabel, getUnit}) => {
           </Accordion.Body>   
         </Accordion.Item>
       </Accordion>
-      <Button className='mt-2'>
+      <Button className='mt-2' variant='primary' type='submit'>
         Save
       </Button>
     </Form>

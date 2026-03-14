@@ -10,8 +10,8 @@ import EquipmentUpdate from './EquipmentUpdate'
 
 const EquipmentDetails = ({ item }) => {
   const [edit, setEdit] = useState(false)
-
-  const { club, spec, distance } = item
+  const [equip, setEquip] = useState(item)
+  const { club, spec, distance } = equip
   const { ss_id } = club
   const { active, make, model, name  } = club
 
@@ -183,7 +183,7 @@ const EquipmentDetails = ({ item }) => {
           </Accordion>
           <small className='text-center'>Data Fields with no value assigned intentionally omitted</small> 
         </>
-      ) : <EquipmentUpdate item={item} setEdit={setEdit} getLabel={getLabel} getUnit={getUnit} />}
+      ) : <EquipmentUpdate setEdit={setEdit} getLabel={getLabel} getUnit={getUnit} equip={equip} setEquip={setEquip} />}
     </Container>
   )
 }
