@@ -23,6 +23,7 @@ def upgrade():
     sa.Column('last_name', sa.String(length=25), nullable=False),
     sa.Column('first_name', sa.String(length=25), nullable=False),
     sa.Column('email', sa.String(length=50), nullable=True),
+    sa.Column('ghin_number', sa.String(length=10), nullable=True),
     sa.Column('username', sa.String(length=50), nullable=True),
     sa.Column('dob', sa.Date(), nullable=True),
     sa.Column('height', sa.Float(), nullable=True),
@@ -45,6 +46,7 @@ def upgrade():
     sa.UniqueConstraint('person_id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username'),
+    sa.UniqueConstraint('ghin_number')
     )
 
     # ### end Alembic commands ###

@@ -9,6 +9,7 @@ class Person(db.Model):
   last_name = db.Column(db.String(25), nullable=False)
   first_name = db.Column(db.String(25), nullable=False)
   username = db.Column(db.String(25), nullable=False, unique=True)
+  ghin_number = db.Column(db.String(10), nullable=True, unique=True)
   email = db.Column(db.String(50), nullable=False, unique=True)
   dob = db.Column(db.Date)
   height = db.Column(db.Float())
@@ -27,11 +28,12 @@ class Person(db.Model):
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
-  def __init__(self, person_id=None, last_name=None, first_name=None, username=None, email=None, dob=None, height=None, weight=None, nation=None, home_facility=None, player_type=None, gender=None, handedness=None, units_distance=None, units_speed=None, units_temp=None, units_weight=None, units_alt=None, units_height=None, created_at=None, updated_at=None):
+  def __init__(self, person_id=None, last_name=None, first_name=None, username=None, ghin_number=None, email=None, dob=None, height=None, weight=None, nation=None, home_facility=None, player_type=None, gender=None, handedness=None, units_distance=None, units_speed=None, units_temp=None, units_weight=None, units_alt=None, units_height=None, created_at=None, updated_at=None):
     self.person_id = person_id
     self.last_name = last_name
     self.first_name = first_name
     self.username = username
+    self.ghin_number = ghin_number
     self.email = email
     self.dob = dob
     self.height = height

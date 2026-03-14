@@ -13,6 +13,8 @@ from app.models import person
 # EQUIPMENT MODELS
 from app.models import equipment, equipment_spec, equipment_distance
 
+# HANDICAP MODELS
+from app.models import handicap_history
 
 from config import Config
  
@@ -39,6 +41,7 @@ def create_app(config_class=Config):
   Migrate(app, equipment.db)
   Migrate(app, equipment_spec.db)
   Migrate(app, equipment_distance.db)
+  Migrate(app, handicap_history.db)
 
   # Register Blueprints
   # FACILITY BLUEPRINTS
