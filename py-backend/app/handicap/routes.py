@@ -6,7 +6,7 @@ import requests
 from app.extensions import Engine
 from app.handicap import bp
 from app.functions.sql_functions import run_query, open_conn, check_conn
-from app.handicap.queries import get_ghin, get_history
+from app.handicap.queries import get_ghin, get_history, get_current
 from app.handicap.functions import create_record
 
 from app.models.handicap_history import Handicap_History
@@ -27,10 +27,6 @@ def handicap_history(id, config_class=Config):
       return {'msg': 'Error retrieving person\'s history'}, 500
 
     return [Handicap_History(handicap_history_id=r['handicap_history_id'], person_id=r['person_id'], ghin_number=r['ghin_number'], assoc=r['assoc'], club=r['club'], hard_soft_cap=r['hard_soft_cap'], hard_cap=r['hard_cap'], soft_cap=r['soft_cap'], rev_date=r['rev_date'], hi_displsy=r['hi_displsy'], hi_value=r['hi_value'], low_hi_displsy=r['low_hi_displsy'], low_hi_value=r['low_hi_value']).as_dict() for r in res]
-
-
-
-    return 'GET'
   # POST RECORD
   elif request.method == 'POST':
     # GET USER GHIN NUMBER
@@ -111,8 +107,22 @@ def handicap_history(id, config_class=Config):
       return {'msg': f'Handicap History records deleted successfully'}, 200
     else:
       return {'msg': f'Error deleting Handicap History records'}, 500
-  # DELET
   else:
     return {'msg': 'Method not allowed'}, 405
 
 # GET CURRENT HANDICAP FOR A USER
+@bp.route('/<int:id>/current', methods=['GET'])
+def handicap_current(id, config_class=Config):
+  # GET HISTORY
+  if request.method == 'GET':
+    query = get_current(id)
+  
+    try:
+      res = run_query(query).mappings().all()
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Error retrieving person\'s history'}, 500
+
+    return [Handicap_History(handicap_history_id=r['handicap_history_id'], person_id=r['person_id'], ghin_number=r['ghin_number'], assoc=r['assoc'], club=r['club'], hard_soft_cap=r['hard_soft_cap'], hard_cap=r['hard_cap'], soft_cap=r['soft_cap'], rev_date=r['rev_date'], hi_displsy=r['hi_displsy'], hi_value=r['hi_value'], low_hi_displsy=r['low_hi_displsy'], low_hi_value=r['low_hi_value']).as_dict() for r in res][0]
+  else:
+    return {'msg': 'Method not allowed'}, 405

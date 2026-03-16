@@ -11,3 +11,12 @@ def get_history(id):
   ORDER BY rev_date DESC;"""
 
   return query
+
+def get_current(id):
+  query = f"""SELECT HH.* FROM "Handicap_History" HH
+  WHERE HH.person_id = {id}
+    AND HH.rev_date = (SELECT MAX(HH1.rev_date) FROM "Handicap_History" HH1
+                      WHERE HH1.person_id = HH.person_id
+                        AND HH1.rev_date <= NOW());"""
+
+  return query
