@@ -15,3 +15,6 @@ class Config:
   JWT_TOKEN_LOCATION = os.environ.get('JWT_TOKEN_LOCATION')
   JWT_ACCESS_TOKEN_EXPIRES = os.environ.get('JWT_ACCESS_TOKEN_EXPIRES')
   FRONTEND_URL = os.environ.get('FRONTEND_URL')
+  SS_COOKIE = os.environ.get('SS_COOKIE')
+  GHIN_TOKEN = os.environ.get('GHIN_TOKEN')
+  GHIN_BASE_URL = os.environ.get('GHIN_BASE_URL')

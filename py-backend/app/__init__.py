@@ -66,6 +66,11 @@ def create_app(config_class=Config):
   from app.equipment import bp as equipment_bp
   app.register_blueprint(equipment_bp)
 
+  # HANDICAP BLUEPRINTS
+  from app.handicap import bp as handicap_bp
+  app.register_blueprint(handicap_bp)
+
+
   @app.route('/')
   def hello_world():
       return '<p>Hello, World!</p>'

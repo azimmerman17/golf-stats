@@ -13,13 +13,13 @@ class Handicap_History(db.Model):
   soft_cap = db.Column(db.String(3), nullable=False, server_default= 'N')
   rev_date = db.Date()
   hi_displsy = db.Column(db.String(5))
-  hi_value = db.Column(db.String(5))
-  low_h_displsy = db.Column(db.String(5))
-  low_hi_value = db.Column(db.String(5))
+  hi_value = db.Column(db.Float)
+  low_hi_displsy = db.Column(db.String(5))
+  low_hi_value = db.Column(db.Float)
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
-  def __init__(self,handicap_history_id=None, person_id=None, ghin_number=None, assoc=None, club=None, hard_soft_cap=None, hard_cap=None, soft_cap=None, rev_date=None, hi_displsy=None, hi_value=None, low_h_displsy=None, low_hi_value=None, created_at=None, updated_at=None):
+  def __init__(self,handicap_history_id=None, person_id=None, ghin_number=None, assoc=None, club=None, hard_soft_cap=None, hard_cap=None, soft_cap=None, rev_date=None, hi_displsy=None, hi_value=None, low_hi_displsy=None, low_hi_value=None, created_at=None, updated_at=None):
     self.handicap_history_id = handicap_history_id
     self.person_id = person_id
     self.ghin_number = ghin_number
@@ -31,7 +31,7 @@ class Handicap_History(db.Model):
     self.rev_date = rev_date
     self.hi_displsy = hi_displsy
     self.hi_value = hi_value
-    self.low_h_displsy = low_h_displsy
+    self.low_hi_displsy = low_hi_displsy
     self.low_hi_value = low_hi_value
     self.created_at = created_at
     self.updated_at = updated_at
@@ -51,6 +51,7 @@ class Handicap_History(db.Model):
     query = f"""
     INSERT INTO "Handicap_History" ({keys})
     VALUES ({values})
+    ON CONFLICT DO NOTHING
     ;"""
 
     return query
@@ -69,10 +70,10 @@ class Handicap_History(db.Model):
 
     return  query
 
-  def delete_row(self):
+  def delete_row(self, id, col):
     query = f"""
     DELETE FROM "Handicap_History" 
-    WHERE {f"handicap_history_id = {self.handicap_history_id}" if self.handicap_history_id is not None else ""}
+    WHERE {f"{col} = {id}"}
     ;"""
 
     return query
