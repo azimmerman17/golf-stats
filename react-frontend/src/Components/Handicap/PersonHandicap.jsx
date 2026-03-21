@@ -7,6 +7,7 @@ import { HandicapContext } from '../../Contexts/HandicapContext'
 
 import HandicapCurrent from './HandicapCurrent'
 import HandicapCalculator from './HandicapCalculaor'
+import HandicapHistory from './HandicapHIstory'
 
 const PersonHandicap = ({ person }) => {
   const { handicapContext, setHandicapContext } = useContext(HandicapContext)
@@ -26,7 +27,7 @@ const PersonHandicap = ({ person }) => {
           <HandicapCalculator current={current} />
         </Col>
         <Col>
-          <p>handicap history</p> 
+          <HandicapHistory history={history} />
         </Col>
       </Row>
     </Container>
