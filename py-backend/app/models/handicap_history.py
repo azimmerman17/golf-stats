@@ -38,8 +38,11 @@ class Handicap_History(db.Model):
 
   def as_dict(self):
     keys = ['created_at', 'updated_at']
-    return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
-  
+    res  = {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
+    res['rev_date'] = self.rev_date
+
+    return res
+
   def insert_row(self, data):
     keys=''
     values=''

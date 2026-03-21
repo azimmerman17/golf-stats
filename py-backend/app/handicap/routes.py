@@ -123,6 +123,9 @@ def handicap_current(id, config_class=Config):
       print('ERROR: ', error)
       return {'msg': 'Error retrieving person\'s history'}, 500
 
-    return [Handicap_History(handicap_history_id=r['handicap_history_id'], person_id=r['person_id'], ghin_number=r['ghin_number'], assoc=r['assoc'], club=r['club'], hard_soft_cap=r['hard_soft_cap'], hard_cap=r['hard_cap'], soft_cap=r['soft_cap'], rev_date=r['rev_date'], hi_displsy=r['hi_displsy'], hi_value=r['hi_value'], low_hi_displsy=r['low_hi_displsy'], low_hi_value=r['low_hi_value']).as_dict() for r in res][0]
+    his = [Handicap_History(handicap_history_id=r['handicap_history_id'], person_id=r['person_id'], ghin_number=r['ghin_number'], assoc=r['assoc'], club=r['club'],  hard_soft_cap=r['hard_soft_cap'], hard_cap=r['hard_cap'], soft_cap=r['soft_cap'], rev_date=r['rev_date'], hi_displsy=r['hi_displsy'], hi_value=r['hi_value'], low_hi_displsy=r['low_hi_displsy'], low_hi_value=r['low_hi_value']).as_dict() for r in res][0]
+    print(Handicap_History(rev_date=res[0]['rev_date']).as_dict())
+    print(type(res[0]['rev_date']))
+    return his
   else:
     return {'msg': 'Method not allowed'}, 405

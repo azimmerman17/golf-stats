@@ -13,6 +13,7 @@ import DisplayTabs from '../../Functions/DisplayTabs'
 import PersonBio from './PersonBio'
 import PersonSettings from './PersonSettings'
 import PersonEquipment from '../Equipment/PersonEquipment'
+import PersonHandicap from '../Handicap/PersonHandicap'
 
 const PersonHome = ({}) => {
   const {currentUser, setCurrentUser} = useContext(CurrentUser)
@@ -50,7 +51,7 @@ const PersonHome = ({}) => {
       case 'User Settings':
         return <PersonSettings person={person} />
       case 'Handicap':
-        return 'Handicap'
+        return <PersonHandicap person={person} />
       case 'Equipment':
         return <PersonEquipment equipment={equipmentContext} />
       case 'Rounds':
