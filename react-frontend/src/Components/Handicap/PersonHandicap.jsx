@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import { HandicapContext } from '../../Contexts/HandicapContext'
 
 import HandicapCurrent from './HandicapCurrent'
+import HandicapCalculator from './HandicapCalculaor'
 
 const PersonHandicap = ({ person }) => {
   const { handicapContext, setHandicapContext } = useContext(HandicapContext)
@@ -22,7 +23,7 @@ const PersonHandicap = ({ person }) => {
          <HandicapCurrent current={current} />
         </Col>
         <Col md={6}>
-          <p> course handicap Calculator</p>
+          <HandicapCalculator current={current} />
         </Col>
         <Col>
           <p>handicap history</p> 
