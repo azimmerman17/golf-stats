@@ -85,7 +85,7 @@ def handicap_history(id, config_class=Config):
     # check connection - open = success, closed = fail
     if check_conn(conn) == True:
       conn.close()
-      return {'msg': f'Handicap History records inserted successfully - {count} records successfully inserted', 'count': count}, 200
+      return {'msg': f'Handicap successfully updated', 'count': count}, 200
     else:
       return {'msg': f'Error inserting Handicap History records - {count} records successfully inserted', 'count': count}, 500
   # DELETE ALL USER HISTORY

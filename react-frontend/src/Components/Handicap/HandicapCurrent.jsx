@@ -1,13 +1,17 @@
-import Card from 'react-bootstrap/Card'
+import { useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
 import InfoDisplay from '../../Functions/InfoDisplay'
 import GetMonthName from '../../Functions/GetMonthName'
 
-const HandicapCurrent = ({ current }) => {
-  const { ghin_number, hard_cap, hi_displsy, low_hi_displsy, rev_date, soft_cap } = current
+const HandicapCurrent = ({ current, setHandicapContext }) => {
+  const [ message, setMessage ] = useState(null)
+
+  if (!current) return 'Loading...'
+  const { ghin_number, hard_cap, hi_displsy, low_hi_displsy, rev_date, soft_cap, person_id } = current
 
   const date_display = (date) => {
     const new_date = new Date(date)
@@ -17,6 +21,24 @@ const HandicapCurrent = ({ current }) => {
     const day = new_date.getDate()
 
     return `${month} ${day}, ${year}`
+  }
+
+  const handleClick = async () => {
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+    const options = {
+      method: 'POST',
+    }
+
+    let response = await fetch(BASE_URL + `handicap/${person_id}`, options)
+    const data = await response.json()
+
+    if (response.status === 200) {
+      setHandicapContext({current: null, history: null})
+      setMessage(data.msg)
+    } else {
+      setMessage(data.msg)
+    }
   }
 
   return (
@@ -44,6 +66,14 @@ const HandicapCurrent = ({ current }) => {
                 <Col>
                   <InfoDisplay data={ghin_number} label={'GHIN NUM'} />
                 </Col>
+              </Row>
+              <Row>
+                  <Button className='w-75 m-auto' variant="primary" onClick={e => handleClick()}>
+                    Update Handicap
+                  </Button>
+                  <p className='text-center my-1'>
+                    {message ? message : null}
+                  </p>
               </Row>
             </Container>
   )

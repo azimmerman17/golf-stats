@@ -15,13 +15,12 @@ const PersonHandicap = ({ person }) => {
   if (!handicapContext) return 'Loading...'
   const {current, history }= handicapContext
 
-  console.log(handicapContext)
   return (
 
     <Container fluid>
       <Row className='m-2'>
         <Col md={6}>
-         <HandicapCurrent current={current} />
+         <HandicapCurrent current={current} setHandicapContext={setHandicapContext} />
         </Col>
         <Col md={6}>
           <HandicapCalculator current={current} />

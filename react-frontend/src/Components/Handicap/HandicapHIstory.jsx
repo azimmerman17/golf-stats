@@ -6,6 +6,7 @@ import InfoDisplay from '../../Functions/InfoDisplay'
 import GetMonthName from '../../Functions/GetMonthName'
 
 const HandicapHistory = ({ history }) => {
+  if (!history) return 'Loading...'
   if (history.length <= 1) return null
 
   const date_display = (date) => {

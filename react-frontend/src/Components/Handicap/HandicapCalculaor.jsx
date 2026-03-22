@@ -9,6 +9,7 @@ import CalculateCourseHandicap from '../../Functions/CalculateCourseHandicap'
 import InfoDisplay from '../../Functions/InfoDisplay'
 
 const HandicapCalculator = ({current}) => {
+  if (!current) return 'Loading...'
   const { hi_value } = current
   const [courseData, setCourseData] = useState(
     {

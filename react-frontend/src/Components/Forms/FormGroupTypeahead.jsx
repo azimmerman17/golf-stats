@@ -9,10 +9,6 @@ const FormGroupTypeahead = ({ formData, formObj, setFormObj, disabled, hide, con
 
   const filterFields = ['code', 'value']
 
-  const handleChange = (e) => {
-    console.log(e)
-  }
-
   return (
     <Form.Group  
       className='mb-3 form-group' 
