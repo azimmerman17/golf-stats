@@ -14,7 +14,7 @@ from app.models import person
 from app.models import equipment, equipment_spec, equipment_distance
 
 # HANDICAP MODELS
-from app.models import handicap_history
+from app.models import handicap_history, strokes_gained
 
 from config import Config
  
@@ -42,6 +42,7 @@ def create_app(config_class=Config):
   Migrate(app, equipment_spec.db)
   Migrate(app, equipment_distance.db)
   Migrate(app, handicap_history.db)
+  # Migrate(app, strokes_gained.db)
 
   # Register Blueprints
   # FACILITY BLUEPRINTS
@@ -74,5 +75,5 @@ def create_app(config_class=Config):
   @app.route('/')
   def hello_world():
       return '<p>Hello, World!</p>'
-
+  
   return app

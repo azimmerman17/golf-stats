@@ -22,7 +22,7 @@ def upgrade():
         sa.Column('handicap_history_id', sa.Integer(), nullable=False),
         sa.Column('person_id', sa.Integer(), nullable=False),
         sa.Column('ghin_number', sa.String(length=10), nullable=False),
-        sa.Column('rev_date', db.Date())
+        sa.Column('rev_date', db.Date()),
         sa.Column('assoc', sa.String(length=25), nullable=True),
         sa.Column('club', sa.String(length=50), nullable=True),
         sa.Column('hard_soft_cap', sa.String(length=3), server_default='N', nullable=False),
