@@ -71,6 +71,9 @@ def create_app(config_class=Config):
   from app.handicap import bp as handicap_bp
   app.register_blueprint(handicap_bp)
 
+  # SEEDER BLUEPRINT
+  from app.seeders import bp as seeder_bp
+  app.register_blueprint(seeder_bp)
 
   @app.route('/')
   def hello_world():

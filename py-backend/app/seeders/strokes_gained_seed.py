@@ -3,7 +3,7 @@ strokes_gained = [
     "shot_code": "0P",
     "distance": 0,
     "lie": "P",
-    "pga_tour_value": "",
+    "pga_tour_value": 0,
     "scratch_value": 0,
     "per_shot_adjust": 0
   },
@@ -11,7 +11,7 @@ strokes_gained = [
     "shot_code": "0H",
     "distance": 0,
     "lie": "H",
-    "pga_tour_value": "",
+    "pga_tour_value": 0,
     "scratch_value": 0,
     "per_shot_adjust": 0
   },
