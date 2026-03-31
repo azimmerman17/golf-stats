@@ -6,7 +6,7 @@ from app.extensions import db, orm
 class Strokes_Gained(db.Model):
   strokes_gained_id = db.Column(db.Integer, primary_key=True)
   shot_code = db.Column(db.String(4), nullable=False, unique=True)
-  distance = db.Column(db.Integer)
+  distance = db.Column(db.Integer, nullable=False)
   lie = db.Column(db.Enum('T','F','R','B', 'S', 'X','P','H','G', name='Strokes_Gained_Lie'), nullable=False, server_default='T')
   pga_tour_value = db.Column(db.FLOAT, nullable=False)
   scratch_value = db.Column(db.FLOAT, nullable=False)

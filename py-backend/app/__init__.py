@@ -6,15 +6,14 @@ from app.extensions import db, cors
 
 # FACILITY MODELS
 from app.models import facility, course, tee, course_rating, hole, hole_geo, facility_season
-
 # PERSON MODELS
 from app.models import person
-
 # EQUIPMENT MODELS
 from app.models import equipment, equipment_spec, equipment_distance
-
 # HANDICAP MODELS
-from app.models import handicap_history, strokes_gained
+from app.models import handicap_history
+# ROUND MODELS
+from app.models import round, round_score, strokes_gained
 
 from config import Config
  
@@ -42,7 +41,10 @@ def create_app(config_class=Config):
   Migrate(app, equipment_spec.db)
   Migrate(app, equipment_distance.db)
   Migrate(app, handicap_history.db)
-  # Migrate(app, strokes_gained.db)
+  Migrate(app, strokes_gained.db)
+  Migrate(app, round.db)
+  Migrate(app, round_score.db)
+
 
   # Register Blueprints
   # FACILITY BLUEPRINTS

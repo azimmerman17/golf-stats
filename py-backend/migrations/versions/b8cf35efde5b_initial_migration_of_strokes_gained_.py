@@ -20,7 +20,7 @@ def upgrade():
     op.create_table('Strokes_Gained',
     sa.Column('strokes_gained_id', sa.Integer(), nullable=False),
     sa.Column('shot_code', sa.String(length=4), nullable=False),
-    sa.Column('distance', sa.Integer(), nullable=True),
+    sa.Column('distance', sa.Integer(), nullable=False),
     sa.Column('lie', sa.Enum('T', 'F', 'R', 'B', 'X', 'P', 'H', 'G', 'S', name='Strokes_Gained_Lie'), server_default='T', nullable=False),
     sa.Column('pga_tour_value', sa.FLOAT(), nullable=False),
     sa.Column('scratch_value', sa.FLOAT(), nullable=False),
