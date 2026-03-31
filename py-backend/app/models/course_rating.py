@@ -13,7 +13,7 @@ class Course_Rating(db.Model):
   slope = db.Column(db.Integer, db.CheckConstraint('slope >= 55 AND slope <= 155', name='check_course_rating_slope'), nullable=False)
   par = db.Column(db.Integer, db.CheckConstraint('par >= 27 AND par <= 80', name='check_course_rating_par'), nullable=False)
   bogey_rating = db.Column(db.FLOAT)
-  effective_date = db.Column(db.DATE, nullable=False, server_default=db.func.now())
+  # effective_date = db.Column(db.DATE, nullable=False, server_default=db.func.now())
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
@@ -56,7 +56,7 @@ class Course_Rating(db.Model):
     self.slope = slope
     self.par = par
     self.bogey_rating = bogey_rating
-    self.effective_date = effective_date
+    # self.effective_date = effective_date
 
   def as_dict(self):
     keys = ['created_at', 'updated_at']

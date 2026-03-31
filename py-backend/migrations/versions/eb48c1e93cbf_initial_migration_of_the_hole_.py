@@ -26,7 +26,7 @@ def upgrade():
     sa.Column('meters', sa.Integer(), server_default='367', nullable=False),
     sa.Column('par', sa.Integer(), nullable=True),
     sa.Column('si', sa.Integer(), nullable=True),
-    sa.Column('effective_date', sa.DATE(), server_default=sa.text('now()'), nullable=False),
+    # sa.Column('effective_date', sa.DATE(), server_default=sa.text('now()'), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['tee_id'], ['Tee.tee_id'], onupdate='CASCADE', ondelete='CASCADE'),

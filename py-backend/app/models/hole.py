@@ -11,7 +11,7 @@ class Hole(db.Model):
   meters = db.Column(db.Integer, db.CheckConstraint('meters > 0 AND meters <= 999', name='check_hole_meters'), nullable=False, server_default='367')
   par = db.Column(db.Integer, db.CheckConstraint('par >= 3 AND par <= 6', name='check_hole_par'))
   si = db.Column(db.Integer, db.CheckConstraint('si >= 1 AND si <= 18', name='check_hole_si'))
-  effective_date = db.Column(db.DATE, nullable=False, server_default=db.func.now())
+  # effective_date = db.Column(db.DATE, nullable=False, server_default=db.func.now())
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
@@ -61,7 +61,7 @@ class Hole(db.Model):
     self.meters = meters
     self.par = par
     self.si = si
-    self.effective_date = effective_date
+    # self.effective_date = effective_date
 
   def as_dict(self):
     keys = ['created_at', 'updated_at']
