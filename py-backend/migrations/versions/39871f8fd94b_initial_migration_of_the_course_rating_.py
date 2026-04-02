@@ -28,7 +28,7 @@ def upgrade():
     sa.Column('slope', sa.Integer(), nullable=False),
     sa.Column('par', sa.Integer(), nullable=False),
     sa.Column('bogey_rating', sa.FLOAT(), nullable=True),
-    sa.Column('effective_date', sa.DATE(), server_default=sa.text('now()'), nullable=False),
+    # sa.Column('effective_date', sa.DATE(), server_default=sa.text('now()'), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['tee_id'], ['Tee.tee_id'], onupdate='CASCADE', ondelete='CASCADE'),

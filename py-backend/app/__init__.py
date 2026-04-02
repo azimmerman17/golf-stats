@@ -13,7 +13,7 @@ from app.models import equipment, equipment_spec, equipment_distance
 # HANDICAP MODELS
 from app.models import handicap_history
 # ROUND MODELS
-from app.models import round, round_score, strokes_gained
+from app.models import round, round_score, round_hole, round_handicap, strokes_gained
 
 from config import Config
  
@@ -44,7 +44,8 @@ def create_app(config_class=Config):
   Migrate(app, strokes_gained.db)
   Migrate(app, round.db)
   Migrate(app, round_score.db)
-
+  Migrate(app, round_handicap.db)
+  Migrate(app, round_hole.db)
 
   # Register Blueprints
   # FACILITY BLUEPRINTS
