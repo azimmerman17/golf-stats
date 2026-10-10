@@ -24,8 +24,6 @@ def create_app(config_class=Config):
   Migrate(app, course_rating.db)
   Migrate(app, hole.db)
 
-  # Mirgrate Models
-
   # Register Blueprints
 
   @app.route('/')
