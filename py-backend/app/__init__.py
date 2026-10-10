@@ -16,8 +16,9 @@ def create_app(config_class=Config):
 
   # Mirgrate Models
   # FACILITY MODELS
-  from app.models import facility
+  from app.models import facility, course
   Migrate(app, facility.db)
+  Migrate(app, course.db)
 
   # Mirgrate Models
 
