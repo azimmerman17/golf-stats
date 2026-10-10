@@ -1,4 +1,7 @@
 from flask import Flask
+from flask_migrate import Migrate
+
+from app.extensions import db
 
 from config import Config
 
@@ -9,6 +12,12 @@ def create_app(config_class=Config):
   app.config.from_object(config_class)
 
   # Initialize Flask extensions
+  db.init_app(app)
+
+  # Mirgrate Models
+  # FACILITY MODELS
+  from app.models import facility
+  Migrate(app, facility.db)
 
   # Mirgrate Models
 
@@ -16,6 +25,6 @@ def create_app(config_class=Config):
 
   @app.route('/')
   def hello_world():
-      return f'<p>Welcome to the {config_class.ENV} Golf Stats Server</p>'
-  
+    return f'<p>Welcome to the {config_class.ENV} Golf Stats Server</p>'
+
   return app
