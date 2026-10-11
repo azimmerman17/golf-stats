@@ -3,6 +3,8 @@ from app.models.tee import Tee
 
 # Model Contains Information for each course hole
 class Hole(db.Model):
+  __tablename__ = 'Hole'
+
   hole_id = db.Column(db.Integer, primary_key=True)
   tee_id = db.Column(db.Integer, db.ForeignKey(Tee.tee_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
   number = db.Column(db.Integer, db.CheckConstraint('number >= 1 AND number <= 18', name='check_hole_number'), nullable=False)
@@ -53,3 +55,16 @@ class Hole(db.Model):
 
   def __init__(self, **kwargs):
     super().__init__(**kwargs) 
+
+    # INSERT record into the DB
+  def insert_query(self, data):
+    cols = []
+    values =[]
+    for k in data.keys():
+      if data[k] is not None:
+        quote = "'" if isinstance(data[k], str) == True else ""
+        cols.append(k)
+        values.append(f'{quote}{data[k]}{quote}')
+    
+    return f"""INSERT INTO `golf-stats`.`Hole` ({', '.join(cols)})
+    VALUES ({', '.join(values)});"""

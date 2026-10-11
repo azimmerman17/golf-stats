@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-import requests
+import requests, us, pycountry
 
 from config import Config
 
@@ -55,3 +55,11 @@ def run_query(query, conn=None, hide=True):
 # make api request
 def call_api(url, methed='GET', payload={}, headers={}):
   return requests.request("GET", url, headers=headers, data=payload)
+
+# get USA state data
+def us_state(value, res=None):
+  return us.states.lookup(value)
+
+def get_country_subdivision(value):
+  lookup_value = pycountry.subdivisions.get(code=value)
+  return (us.states.lookup(lookup_value.name).abbr if lookup_value.country.alpha_3 == 'USA' else value, lookup_value.country.alpha_3)

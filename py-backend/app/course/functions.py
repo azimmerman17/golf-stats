@@ -1,0 +1,36 @@
+from app.extensions import run_query, db_connect, db_close
+from app.models.course import Course
+from app.tee.functions import upload_tee
+
+# fuction to upload data to Course Table
+def upload_course(ghin_data=None, payload=None, method='POST', conn=None):
+  # set missing keys to None
+  input_keys = ['hole_count', 'established', 'architect', 'handle']
+  for k in input_keys:
+    payload[k] = None if k not in payload.keys() else payload[k]
+
+  course = {
+    'course_id': ghin_data['CourseId'],                 # GHIN
+    'facility_id': ghin_data['Facility']['FacilityId'], # GHIN 
+    'stack_course_id': None,                            # Stack
+    'name': ghin_data['CourseName'],                    # GHIN 
+    'hole_count': payload['hole_count'],                # Manual
+    'established': payload['established'],              # Manual
+    'architect': payload['architect'],                  # Manual
+    'handle': payload['handle'],                        # Manual
+  }
+
+  # INSERT record to DB
+  if conn is None:
+    conn = db_connect()
+  try:
+    run_query(Course().insert_query(course), conn)
+  except Exception as error:
+    print('ERROR: ', error)
+    db_close(conn, action='rollback')
+    flag = 1
+    return ({'msg': 'Error updating course , cannont create course', 'status_code': 500}, 1)
+
+  # Add Tees for the Course
+  return upload_tee(ghin_data=ghin_data, payload=payload, method=method, conn=conn)
+

@@ -47,3 +47,16 @@ class Course_Rating(db.Model):
   
   def __init__(self, **kwargs):
     super().__init__(**kwargs) 
+
+  # INSERT record into the DB
+  def insert_query(self, data):
+    cols = []
+    values =[]
+    for k in data.keys():
+      if data[k] is not None:
+        quote = "'" if isinstance(data[k], str) == True else ""
+        cols.append(k)
+        values.append(f'{quote}{data[k]}{quote}')
+    
+    return f"""INSERT INTO `golf-stats`.`Course_Rating` ({', '.join(cols)})
+    VALUES ({', '.join(values)});"""

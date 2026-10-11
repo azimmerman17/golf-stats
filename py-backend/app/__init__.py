@@ -25,7 +25,10 @@ def create_app(config_class=Config):
   Migrate(app, hole.db)
 
   # Register Blueprints
-
+  # FACILITY BLUEPRINTS
+  from app.facility import bp as facility_bp
+  app.register_blueprint(facility_bp)
+  
   @app.route('/')
   def hello_world():
     return f'<p>Welcome to the {config_class.ENV} Golf Stats Server</p>'

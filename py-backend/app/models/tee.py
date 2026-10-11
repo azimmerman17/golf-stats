@@ -12,6 +12,7 @@ class Tee(db.Model):
   yards = db.Column(db.Integer, db.CheckConstraint('yards > 0', name='check_tee_yards'), nullable=False, server_default='7200')
   meters = db.Column(db.Integer, db.CheckConstraint('meters > 0', name='check_tee_meters'), nullable=False, server_default='6600')
   hole_count = db.Column(db.Integer, db.CheckConstraint('hole_count >= 1 AND hole_count <= 18', name='check_tee_hole_count'), nullable=False, server_default='18')
+  gender = db.Column(db.Enum('M','F', name='tee_rating_gender'), nullable=False, server_default='M')
   created_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
   updated_at = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.now())
 
@@ -38,3 +39,16 @@ class Tee(db.Model):
 
   def __init__(self, **kwargs):
     super().__init__(**kwargs) 
+
+  # INSERT record into the DB
+  def insert_query(self, data):
+    cols = []
+    values =[]
+    for k in data.keys():
+      if data[k] is not None:
+        quote = "'" if isinstance(data[k], str) == True else ""
+        cols.append(k)
+        values.append(f'{quote}{data[k]}{quote}')
+    
+    return f"""INSERT INTO `golf-stats`.`Tee` ({', '.join(cols)})
+    VALUES ({', '.join(values)});"""
