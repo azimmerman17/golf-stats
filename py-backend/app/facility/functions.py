@@ -1,7 +1,10 @@
-from app.extensions import get_country_subdivision, run_query, db_connect, db_close
+from app.extensions import get_country_subdivision, get_country, us_state, run_query, db_connect, db_close
 from app.models.facility import Facility
 from app.models.facility_season import Facility_Season
-from app.course.functions import upload_course
+from app.models.facility_season import Facility_Season
+from app.course.functions import upload_course, build_course
+from app.course.queries import get_course
+from app.facility.queries import get_facility_season
 
 # load data from ghin and payload to the DB
 def upload_facility(ghin_data=None, payload=None, method='POST'):
@@ -55,3 +58,30 @@ def upload_facility(ghin_data=None, payload=None, method='POST'):
     db_close(conn, action='rollback')
     return msg
 
+# build a facility record
+def buildFacility(data, full=False):
+  f = Facility(**data).as_dict()
+  
+  # get state and country data
+  if f['country'] == 'USA' and f['state'] is not None:
+    f['state'] = {
+      'abbr': f['state'],
+      'name': str(us_state(f['state']))
+    }
+    
+  if f['country'] is not None:
+    f['country'] = get_country(f['country'], 'alpha_3') if f['country'] is not None else f['country']
+
+  # get courses that belong to the facilty
+  try:
+    courses = run_query(get_course(id=f['facility_id'], key='facility_id')).mappings().all()
+    season = run_query(get_facility_season(f['facility_id'])).mappings().all() 
+  except Exception as error:
+    print('ERROR: ', error)
+    return {'msg': f'Unable to to retieve facility_id {f['facility_id']} course data'}, 500
+
+  return {
+    'facility': f,
+    'courses': [build_course(c, full) for c in courses],
+    'season': Facility_Season(**season[0]).as_dict()
+    }

@@ -1,3 +1,5 @@
+from datetime import date
+
 from app.extensions import db, orm
 from app.models.facility import Facility
 
@@ -35,6 +37,11 @@ class Course(db.Model):
 
   def __init__(self, **kwargs):
     super().__init__(**kwargs) 
+
+  # Tramform to dict
+  def as_dict(self):
+    keys = ['created_at', 'updated_at']
+    return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in keys}
 
   # INSERT record into the DB
   def insert_query(self, data):

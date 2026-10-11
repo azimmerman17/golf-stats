@@ -3,14 +3,24 @@ from markupsafe import escape
 
 from app.extensions import run_query, call_api
 from app.facility import bp
-from app.facility.queries import check_unique_facility
-from app.facility.functions import upload_facility
+from app.facility.queries import check_unique_facility, get_facility
+from app.facility.functions import upload_facility, buildFacility
 from config import Config
 
 # GET ALL FACILITIES, CREATE NEW FACILITY
 @bp.route('/', methods=['GET', 'POST'])
 def facility(config_class=Config):
   if request.method == 'GET':
+    facilities = []
+    try:
+      res = run_query(get_facility()).mappings().all()
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Unable to to retieve facilities'}, 500
+
+    return [buildFacility(r) for r in res]
+
+
     return 'Method not solutioned'
   elif request.method == 'POST':
     # validate data and that the data is new

@@ -34,3 +34,9 @@ def upload_course(ghin_data=None, payload=None, method='POST', conn=None):
   # Add Tees for the Course
   return upload_tee(ghin_data=ghin_data, payload=payload, method=method, conn=conn)
 
+# function to transform course model to dict
+def build_course(course, full=True):
+  course_dict = Course(**course).as_dict()
+  # future development - continue to the Tee Dict
+  
+  return course_dict

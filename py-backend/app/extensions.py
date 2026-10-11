@@ -57,8 +57,22 @@ def call_api(url, methed='GET', payload={}, headers={}):
   return requests.request("GET", url, headers=headers, data=payload)
 
 # get USA state data
-def us_state(value, res=None):
+def us_state(value):
   return us.states.lookup(value)
+  
+
+def get_country(value, key):
+  match key:
+    case 'alpha_2':
+      return dict(pycountry.countries.get(alpha_2=value))
+    case 'alpha_3':
+      return dict(pycountry.countries.get(alpha_3=value))
+    case 'numeric':
+      return dict(pycountry.countries.get(numeric=value))
+    case 'name':
+      return dict(pycountry.countries.get(name=value))
+    case 'official_name':
+      return dict(pycountry.countries.get(official_name=value))
 
 def get_country_subdivision(value):
   lookup_value = pycountry.subdivisions.get(code=value)
