@@ -11,7 +11,6 @@ from config import Config
 @bp.route('/', methods=['GET', 'POST'])
 def facility(config_class=Config):
   if request.method == 'GET':
-    facilities = []
     try:
       res = run_query(get_facility()).mappings().all()
     except Exception as error:
@@ -49,7 +48,27 @@ def facility(config_class=Config):
   else:
     return {'msg': 'Method not allowed'}, 405
 
-
 # GET ALL FROM A FACILITY BY ID, CREATE NEW COURSE, UPDATE & DELETE EXISTING FACILITY
-# @bp.route('/<int:id>', methods=['GET', 'POST', 'PUT', 'DELETE'])
-# def facility_id(id, config_class=Config):
+@bp.route('/<int:id>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def facility_id(id, config_class=Config):
+  if request.method == 'GET':
+    try:
+      res = run_query(get_facility(id)).mappings().all()
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Unable to to retieve facility'}, 500
+
+    return  buildFacility(res[0], full=True)
+
+
+  elif request.method == 'POST':
+    return 'Method not solutioned'
+  elif request.method == 'PUT':
+    return 'Method not solutioned'
+
+  elif request.method == 'DELETE':
+    return 'Method not solutioned'
+  else:
+    return {'msg': 'Method not allowed'}, 405
+
+

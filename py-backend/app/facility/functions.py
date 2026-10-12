@@ -76,12 +76,12 @@ def buildFacility(data, full=False):
   try:
     courses = run_query(get_course(id=f['facility_id'], key='facility_id')).mappings().all()
     season = run_query(get_facility_season(f['facility_id'])).mappings().all() 
+
+    return {
+      'facility': f,
+      'courses': [build_course(c, full) for c in courses],
+      'season': Facility_Season(**season[0]).as_dict()
+      }
   except Exception as error:
     print('ERROR: ', error)
-    return {'msg': f'Unable to to retieve facility_id {f['facility_id']} course data'}, 500
-
-  return {
-    'facility': f,
-    'courses': [build_course(c, full) for c in courses],
-    'season': Facility_Season(**season[0]).as_dict()
-    }
+    return {'msg': f'Unable to to retieve facility_id {f['facility_id']}'}, 500

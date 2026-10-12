@@ -21,7 +21,7 @@ def upload_course_rating(ghin_data=None, payload=None, method='POST', conn=None)
     rating_data = {
       'tee_id': ghin_data['TeeSetRatingId'],
       'name': rating['RatingType'],
-      'hole_count': count,
+      'hole_count': 18 if rating['RatingType'] == 'Total' else 9,
       'gender': ghin_data['Gender'][0],
       'start_hole': start_hole,
       'course_rating': rating['CourseRating'],
@@ -38,3 +38,6 @@ def upload_course_rating(ghin_data=None, payload=None, method='POST', conn=None)
       return ({'msg': 'Error updating course ratings , cannont create course', 'status_code': 500}, 1)
 
   return ({'msg': 'Course Rating Created', 'status_code': 200}, 0)
+
+def build_course_rating(rating):
+  return Course_Rating(**rating).as_dict()

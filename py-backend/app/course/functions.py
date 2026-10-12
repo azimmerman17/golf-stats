@@ -1,6 +1,8 @@
 from app.extensions import run_query, db_connect, db_close
 from app.models.course import Course
-from app.tee.functions import upload_tee
+from app.tee.functions import upload_tee, build_tee
+from app.tee.queries import get_tee
+
 
 # fuction to upload data to Course Table
 def upload_course(ghin_data=None, payload=None, method='POST', conn=None):
@@ -38,5 +40,8 @@ def upload_course(ghin_data=None, payload=None, method='POST', conn=None):
 def build_course(course, full=True):
   course_dict = Course(**course).as_dict()
   # future development - continue to the Tee Dict
+  if full == True:
+    tees = run_query(get_tee(id=course_dict['course_id'], key='course_id')).mappings().all()
+    course_dict['tees'] = [build_tee(t) for t in tees]
   
   return course_dict

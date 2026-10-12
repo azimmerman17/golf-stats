@@ -25,3 +25,6 @@ def upload_hole(ghin_data=None, payload=None, method='POST', conn=None):
       return ({'msg': 'Error updating holes , cannont create course', 'status_code': 500}, 1)
 
   return ({'msg': 'Course Created', 'status_code': 200}, 0)
+
+def build_hole(hole):
+  return Hole(**hole).as_dict()

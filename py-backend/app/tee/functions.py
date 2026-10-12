@@ -1,7 +1,10 @@
 from app.extensions import run_query, db_connect, db_close
 from app.models.tee import Tee
-from app.course_rating.functions import upload_course_rating
-from app.hole.functions import upload_hole
+from app.course_rating.functions import upload_course_rating, build_course_rating
+from app.course_rating.queries import get_course_rating
+from app.hole.functions import upload_hole, build_hole
+from app.hole.queries import get_hole
+
 
 # fuction to upload data to Tee Table
 def upload_tee(ghin_data=None, payload=None, method='POST', conn=None):
@@ -49,4 +52,13 @@ def upload_tee(ghin_data=None, payload=None, method='POST', conn=None):
 
   return (msg, flag)
     
+def build_tee(tee):
+  tee_data = Tee(**tee).as_dict()
 
+  ratings  = run_query(get_course_rating(id=tee['tee_id'], key='tee_id')).mappings().all()
+  tee_data['course_ratings'] = [build_course_rating(r) for r in ratings]
+
+  holes = run_query(get_hole(tee['tee_id'], 'tee_id')).mappings().all()
+  tee_data['holes'] = [build_hole(h) for h in holes]
+  
+  return tee_data
