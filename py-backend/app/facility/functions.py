@@ -1,7 +1,6 @@
 from app.extensions import get_country_subdivision, get_country, us_state, run_query, db_connect, db_close
 from app.models.facility import Facility
 from app.models.facility_season import Facility_Season
-from app.models.facility_season import Facility_Season
 from app.course.functions import upload_course, build_course
 from app.course.queries import get_course
 from app.facility.queries import get_facility_season
@@ -59,7 +58,7 @@ def upload_facility(ghin_data=None, payload=None, method='POST'):
     return msg
 
 # build a facility record
-def buildFacility(data, full=False):
+def build_facility(data, full=False):
   f = Facility(**data).as_dict()
   
   # get state and country data
@@ -85,3 +84,16 @@ def buildFacility(data, full=False):
   except Exception as error:
     print('ERROR: ', error)
     return {'msg': f'Unable to to retieve facility_id {f['facility_id']}'}, 500
+
+def update_facility(data, id):
+  try:
+    if 'season' in data.keys():
+      run_query(Facility_Season(facility_id=id).update_query(data['season']))
+    else:
+      run_query(Facility(facility_id=id).update_query(data))
+    return {'msg': f'Facility {'season'  if 'season' in data.keys() else ''} Updated'}, 200
+  except Exception as error:
+    print('ERROR: ', error)
+    return {'msg': f'Unable to update facility {'season'  if 'season' in data.keys() else ''}'}, 500
+
+

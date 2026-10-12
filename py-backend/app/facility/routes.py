@@ -4,7 +4,7 @@ from markupsafe import escape
 from app.extensions import run_query, call_api
 from app.facility import bp
 from app.facility.queries import check_unique_facility, get_facility
-from app.facility.functions import upload_facility, buildFacility
+from app.facility.functions import upload_facility, build_facility, update_facility
 from config import Config
 
 # GET ALL FACILITIES, CREATE NEW FACILITY
@@ -18,9 +18,6 @@ def facility(config_class=Config):
       return {'msg': 'Unable to to retieve facilities'}, 500
 
     return [buildFacility(r) for r in res]
-
-
-    return 'Method not solutioned'
   elif request.method == 'POST':
     # validate data and that the data is new
     if request.is_json == False:
@@ -33,7 +30,7 @@ def facility(config_class=Config):
       try:
         res = run_query(check_unique_facility(request.json)).mappings().all()
         if len(res) > 0:
-          return {'msg': 'Facility already exists, updates must occur through the facility\'s profile'}, 200 
+          return {'msg': 'Facility already exists, updates must occur through the facility\'s profile'}, 400 
       except Exception as error:
         print('ERROR: ', error)
         return {'msg': 'Unable to confirm if facility does not exist'}, 500
@@ -59,12 +56,24 @@ def facility_id(id, config_class=Config):
       return {'msg': 'Unable to to retieve facility'}, 500
 
     return  buildFacility(res[0], full=True)
-
-
   elif request.method == 'POST':
     return 'Method not solutioned'
   elif request.method == 'PUT':
-    return 'Method not solutioned'
+    # validate data and that the data is new
+    if request.is_json == False:
+      return {'msg': 'No JSON data to update facility'}, 400
+
+    # check if facility_id is in the table
+    try:
+      res = run_query(get_facility(id)).mappings().all()
+      if len(res) == 0:
+        return {'msg': 'Facility does not exist'}, 400 
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': 'Unable to confirm if facility exists'}, 500
+
+    return update_facility(request.json, id)
+
 
   elif request.method == 'DELETE':
     return 'Method not solutioned'

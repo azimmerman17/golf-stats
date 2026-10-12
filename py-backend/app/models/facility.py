@@ -65,3 +65,15 @@ class Facility(db.Model):
     
     return f"""INSERT INTO `golf-stats`.`Facility` ({', '.join(cols)})
     VALUES ({', '.join(values)});"""
+
+  # UPDATE record into the DB
+  def update_query(self, data):
+    print(data)
+    values = ['updated_at = NOW()']
+    for k in data.keys():
+        quote = "'" if isinstance(data[k], str) == True else ""
+        values.append(f'{k} = {quote}{data[k] if data[k] is not None else 'null'}{quote}')
+
+    return f"""UPDATE `golf-stats`.`Facility`
+      SET {', '.join(values)}
+      WHERE facility_id = {self.facility_id};"""
