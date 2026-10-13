@@ -23,6 +23,7 @@ def upload_course(ghin_data=None, payload=None, method='POST', conn=None):
   }
 
   # INSERT record to DB
+  c_flag = 1 if conn is None else 0
   if conn is None:
     conn = db_connect()
   try:
@@ -34,7 +35,17 @@ def upload_course(ghin_data=None, payload=None, method='POST', conn=None):
     return ({'msg': 'Error updating course , cannont create course', 'status_code': 500}, 1)
 
   # Add Tees for the Course
-  return upload_tee(ghin_data=ghin_data, payload=payload, method=method, conn=conn)
+  (msg, flag) = upload_tee(ghin_data=ghin_data, payload=payload, method=method, conn=conn)
+  
+  if c_flag == 1:
+    if flag == 0:
+      db_close(conn, action='commit')
+      return msg
+    else:
+      db_close(conn, action='rollback')
+      return msg 
+  else:
+    return (msg, flag)
 
 # function to transform course model to dict
 def build_course(course, full=True):

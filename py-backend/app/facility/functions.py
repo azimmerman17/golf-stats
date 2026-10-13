@@ -28,8 +28,8 @@ def upload_facility(ghin_data=None, payload=None, method='POST'):
     'city': ghin_data['CourseCity'],                                    # Stack file then GHIN
     'state': state,                                                     # Stack file then GHIN
     'country': country,                                                 # Stack file then GHIN
-    'geo_lat': ghin_data['Facility']['GeoLocationLongitude'],           # GHIN
-    'geo_lon': ghin_data['Facility']['GeoLocationLatitude'],            # GHIN
+    'geo_lon': round(ghin_data['Facility']['GeoLocationLongitude'],5),  # GHIN
+    'geo_lat': round(ghin_data['Facility']['GeoLocationLatitude'], 5),  # GHIN
   }
   season = {
     'facility_id': ghin_data['Facility']['FacilityId'],     # GHIN
