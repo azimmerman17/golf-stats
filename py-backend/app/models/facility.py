@@ -77,3 +77,7 @@ class Facility(db.Model):
     return f"""UPDATE `golf-stats`.`Facility`
       SET {', '.join(values)}
       WHERE facility_id = {self.facility_id};"""
+
+  def delete_query(self):
+    return f"""DELETE FROM `golf-stats`.`Facility`
+      WHERE facility_id = {self.facility_id};"""

@@ -5,6 +5,7 @@ from app.extensions import run_query, call_api
 from app.facility import bp
 from app.facility.queries import check_unique_facility, get_facility
 from app.facility.functions import upload_facility, build_facility, update_facility
+from app.models.facility import Facility
 from config import Config
 
 # GET ALL FACILITIES, CREATE NEW FACILITY
@@ -73,10 +74,13 @@ def facility_id(id, config_class=Config):
       return {'msg': 'Unable to confirm if facility exists'}, 500
 
     return update_facility(request.json, id)
-
-
   elif request.method == 'DELETE':
-    return 'Method not solutioned'
+    try:
+      run_query(Facility(facility_id=id).delete_query())
+      return {'msg': f'Facility {id} deleted'}, 200 
+    except Exception as error:
+      print('ERROR: ', error)
+      return {'msg': f'Error deleting Facility {id}'}, 500 
   else:
     return {'msg': 'Method not allowed'}, 405
 
