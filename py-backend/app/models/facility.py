@@ -68,7 +68,6 @@ class Facility(db.Model):
 
   # UPDATE record into the DB
   def update_query(self, data):
-    print(data)
     values = ['updated_at = NOW()']
     for k in data.keys():
         quote = "'" if isinstance(data[k], str) == True else ""

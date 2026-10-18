@@ -27,10 +27,32 @@ def create_app(config_class=Config):
   # Register Blueprints
   # FACILITY BLUEPRINTS
   from app.facility import bp as facility_bp
-  app.register_blueprint(facility_bp)
+  from app.course import bp as course_bp
   
+  app.register_blueprint(facility_bp)
+  app.register_blueprint(course_bp)
+
   @app.route('/')
   def hello_world():
     return f'<p>Welcome to the {config_class.ENV} Golf Stats Server</p>'
+
+  @app.route('/endpoints')
+  def endpoints():
+    return f"""
+    <div>
+      <div><strong>{config_class.ENV} Golf Stats Server</strong></div>
+      </br>
+      <div>FACILITY SCHEMA</div>
+      <div> /facility - Get All Facilities</div>
+      <div> /facility/{'{id}'} - Get Facility By Id</div>
+      <div> /course/{'{id}'} - Get Course By Id</div>
+
+    </div>"""
+  
+  @app.route('/*')
+  def error():
+    return f'404 - Does not Exist'
+
+
 
   return app

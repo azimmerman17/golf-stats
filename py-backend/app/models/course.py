@@ -55,3 +55,18 @@ class Course(db.Model):
     
     return f"""INSERT INTO `golf-stats`.`Course` ({', '.join(cols)})
     VALUES ({', '.join(values)});"""
+  
+  # UPDATE record into the DB
+  def update_query(self, data):
+    values = ['updated_at = NOW()']
+    for k in data.keys():
+        quote = "'" if isinstance(data[k], str) == True else ""
+        values.append(f'{k} = {quote}{data[k] if data[k] is not None else 'null'}{quote}')
+
+    return f"""UPDATE `golf-stats`.`Course`
+      SET {', '.join(values)}
+      WHERE course_id = {self.course_id};"""
+
+  def delete_query(self):
+    return f"""DELETE FROM `golf-stats`.`Course`
+      WHERE course_id = {self.course_id};"""

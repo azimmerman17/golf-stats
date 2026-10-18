@@ -6,8 +6,8 @@ from app.facility import bp
 from app.facility.queries import check_unique_facility, get_facility
 from app.facility.functions import upload_facility, build_facility, update_facility
 from app.course.functions import upload_course
-
 from app.models.facility import Facility
+
 from config import Config
 
 # GET ALL FACILITIES, CREATE NEW FACILITY
@@ -55,12 +55,12 @@ def facility(config_class=Config):
 def facility_id(id, config_class=Config):
   if request.method == 'GET':
     try:
-      res = run_query(get_facility(id)).mappings().all()
+      res = run_query(get_facility(escape(id))).mappings().all()
     except Exception as error:
       print('ERROR: ', error)
       return {'msg': 'Unable to to retieve facility'}, 500
 
-    return  buildFacility(res[0], full=True)
+    return  build_facility(res[0], full=True)
   elif request.method == 'POST':
     # validate data and that the data is new
     if request.is_json == False:
@@ -74,7 +74,7 @@ def facility_id(id, config_class=Config):
         res = run_query(check_unique_facility(request.json)).mappings().all()
         if len(res) != 0:
           return {'msg': 'Course already exists'}, 400 
-        res = run_query(get_facility(id)).mappings().all()
+        res = run_query(get_facility(escape(id))).mappings().all()
         if len(res) == 0:
           return {'msg': 'Facility does not exist'}, 400 
       except Exception as error:
@@ -99,22 +99,20 @@ def facility_id(id, config_class=Config):
 
     # check if facility_id is in the table
     try:
-      res = run_query(get_facility(id)).mappings().all()
+      res = run_query(get_facility(escape(id))).mappings().all()
       if len(res) == 0:
         return {'msg': 'Facility does not exist'}, 400 
     except Exception as error:
       print('ERROR: ', error)
       return {'msg': 'Unable to confirm if facility exists'}, 500
 
-    return update_facility(request.json, id)
+    return update_facility(request.json, escape(id))
   elif request.method == 'DELETE':
     try:
       run_query(Facility(facility_id=id).delete_query())
-      return {'msg': f'Facility {id} deleted'}, 200 
+      return {'msg': f'Facility {escape(id)} deleted'}, 200 
     except Exception as error:
       print('ERROR: ', error)
-      return {'msg': f'Error deleting Facility {id}'}, 500 
+      return {'msg': f'Error deleting Facility {escape(id)}'}, 500 
   else:
     return {'msg': 'Method not allowed'}, 405
-
-

@@ -56,3 +56,12 @@ def build_course(course, full=True):
     course_dict['tees'] = [build_tee(t) for t in tees]
   
   return course_dict
+
+def update_course(data, id):
+  try:
+    run_query(Course(course_id=id).update_query(data))
+    return {'msg': 'Course Updated'}, 200
+  except Exception as error:
+    print('ERROR: ', error)
+    return {'msg': 'Unable to update course'}, 500
+
