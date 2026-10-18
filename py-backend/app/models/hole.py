@@ -71,5 +71,17 @@ class Hole(db.Model):
         cols.append(k)
         values.append(f'{quote}{data[k]}{quote}')
     
-    return f"""INSERT INTO `golf-stats`.`Hole` ({', '.join(cols)})
+    return f"""INSERT INTO `golf-stats`.Hole ({', '.join(cols)})
     VALUES ({', '.join(values)});"""
+  
+  # INSERT record into the DB
+  def update_ghin(self, data):
+    values =[]
+    for k in data.keys():
+      quote = "'" if isinstance(data[k], str) == True else ""
+      values.append(f'{k} = {quote}{data[k]}{quote}')
+   
+    return f"""
+      UPDATE `golf-stats`.Hole
+      SET {', '.join(values)}
+      WHERE hole_id = {self.hole_id};"""

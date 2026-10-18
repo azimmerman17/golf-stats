@@ -5,7 +5,7 @@ from app.tee.queries import get_tee
 
 
 # fuction to upload data to Course Table
-def upload_course(ghin_data=None, payload=None, method='POST', conn=None):
+def upload_course(ghin_data=None, payload={}, method='POST', conn=None):
   # set missing keys to None
   input_keys = ['hole_count', 'established', 'architect', 'handle']
   for k in input_keys:

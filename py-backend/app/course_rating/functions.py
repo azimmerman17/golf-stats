@@ -1,4 +1,5 @@
 from app.extensions import run_query, db_connect, db_close
+from app.course_rating.queries import get_course_rating_ghin
 from app.models.course_rating import Course_Rating
 
 # fuction to upload data to Course Rating Table
@@ -31,7 +32,15 @@ def upload_course_rating(ghin_data=None, payload=None, method='POST', conn=None)
     }
 
     try:
-      run_query(Course_Rating().insert_query(rating_data), conn)
+      if method == 'PUT':
+        # get current course rating 
+        current = run_query(get_course_rating_ghin(rating_data)).mappings().all()
+        if len(current) > 0:
+          run_query(Course_Rating(**current[0]).update_ghin(rating_data), conn)
+        else:
+          run_query(Course_Rating().insert_query(rating_data), conn)
+      else:
+        run_query(Course_Rating().insert_query(rating_data), conn)
     except Exception as error:
       print('ERROR: ', error)
       db_close(conn, action='rollback')

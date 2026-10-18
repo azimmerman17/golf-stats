@@ -4,7 +4,8 @@ from markupsafe import escape
 from app.extensions import run_query, call_api
 from app.course import bp
 from app.course.queries import get_course
-from app.course.functions import build_course, update_course
+from app.course.functions import build_course, update_course, upload_course
+from app.models.course import Course
 from config import Config
 
 
@@ -44,5 +45,22 @@ def course_id(id, config_class=Config):
 
 
 # REFRESH COURSE DATA THROUGH GHIN
-# @bp.route('/ghin/<int:id>', methods=['PUT'])
-# def facility_ghin(id, config_class=Config):
+@bp.route('/ghin/<int:id>', methods=['POST'])
+def facility_ghin(id, config_class=Config):
+  try:
+    res = run_query(get_course(escape(id))).mappings().all()
+    data = Course(**res[0]).as_dict()
+  except Exception as error:
+    print('ERROR: ', error)
+    return {'msg': 'Unable to to retieve course'}, 500
+
+  # GET data from GHIN
+  ghin_url = f'{Config.GHIN_BASE_URL}{Config.GHIN_COURSE_ENDPOINT}?courseId={escape(id)}&include_altered_tees=false'
+  ghin_headers = {'Authorization': f'Bearer {Config.GHIN_TOKEN}'}
+  ghin_data = call_api(ghin_url, headers=ghin_headers)
+  
+  if ghin_data.status_code >= 400:
+    return {'msg': 'GHIN API call failed', 'error': ghin_data.text}, ghin_data.status_code
+  # Populate Database with data
+  return upload_course(ghin_data=ghin_data.json(), payload=data, method='PUT')
+

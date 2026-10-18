@@ -55,5 +55,7 @@ class Tee(db.Model):
         cols.append(k)
         values.append(f'{quote}{data[k]}{quote}')
     
-    return f"""INSERT INTO `golf-stats`.`Tee` ({', '.join(cols)})
-    VALUES ({', '.join(values)});"""
+    return f"""INSERT INTO `golf-stats`.Tee ({', '.join(cols)})
+    VALUES ({', '.join(values)}) AS new_data
+    ON DUPLICATE KEY UPDATE 
+      {', '.join([f'{c} = new_data.{c}' for c in cols])};"""

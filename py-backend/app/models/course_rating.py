@@ -63,5 +63,17 @@ class Course_Rating(db.Model):
         cols.append(k)
         values.append(f'{quote}{data[k]}{quote}')
     
-    return f"""INSERT INTO `golf-stats`.`Course_Rating` ({', '.join(cols)})
+    return f"""INSERT INTO `golf-stats`.Course_Rating ({', '.join(cols)})
     VALUES ({', '.join(values)});"""
+
+  # INSERT record into the DB
+  def update_ghin(self, data):
+    values =[]
+    for k in data.keys():
+      quote = "'" if isinstance(data[k], str) == True else ""
+      values.append(f'{k} = {quote}{data[k]}{quote}')
+   
+    return f"""
+      UPDATE`golf-stats`.Course_Rating
+      SET {', '.join(values)}
+      WHERE course_rating_id = {self.course_rating_id};"""

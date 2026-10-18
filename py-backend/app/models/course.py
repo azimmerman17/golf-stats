@@ -54,7 +54,9 @@ class Course(db.Model):
         values.append(f'{quote}{data[k]}{quote}')
     
     return f"""INSERT INTO `golf-stats`.`Course` ({', '.join(cols)})
-    VALUES ({', '.join(values)});"""
+    VALUES ({', '.join(values)}) AS new_data
+    ON DUPLICATE KEY UPDATE 
+      {', '.join([f'{c} = new_data.{c}' for c in cols])};"""
   
   # UPDATE record into the DB
   def update_query(self, data):
